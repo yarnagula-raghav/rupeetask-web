@@ -127,42 +127,39 @@ function AdsTask() {
         </div>
 
         <div className="task-execute-box">
-          {isDone ? (
-            <div style={{ color: 'var(--color-success)', fontWeight: 'bold', fontSize: '1.2rem', textAlign: 'center' }}>
-              ✅ Daily Quota Completed!
+          {isDone && (
+            <div style={{ color: 'var(--color-success)', fontWeight: 'bold', fontSize: '1.1rem', textAlign: 'center', marginBottom: '16px' }}>
+              ✅ Daily Quota Completed! Keep earning!
             </div>
-          ) : (
-            <>
-              {!isWatching && !canClaim && (
-                <button className="btn-primary" onClick={startAd}>
-                  🚀 Launch Ad Video
-                </button>
-              )}
+          )}
+          {!isWatching && !canClaim && (
+            <button className="btn-primary" onClick={startAd}>
+              🚀 Launch Ad Video
+            </button>
+          )}
 
-              {isWatching && !canClaim && (
-                <div className="ad-screen-mock" style={{ display: "block" }}>
-                  <div className="ad-overlay-timer">{timeLeft}s remaining</div>
-                  <div className="ad-video-title">AdSense Sponsored Content</div>
-                  <div style={{ fontSize: "2.5rem", marginTop: "10px" }}>📺</div>
-                </div>
-              )}
+          {isWatching && !canClaim && (
+            <div className="ad-screen-mock" style={{ display: "block" }}>
+              <div className="ad-overlay-timer">{timeLeft}s remaining</div>
+              <div className="ad-video-title">AdSense Sponsored Content</div>
+              <div style={{ fontSize: "2.5rem", marginTop: "10px" }}>📺</div>
+            </div>
+          )}
 
-              {canClaim && (
-                <button className="btn-primary" onClick={() => { 
-                  if (Date.now() - startTimeRef.current < 5000) {
-                    alert("Security Alert: Invalid completion time detected.");
-                    setIsWatching(false); setCanClaim(false); return;
-                  }
-                  setIsWatching(false); 
-                  setCanClaim(false); 
-                  addEarnings(0.50);
-                  incrementTaskProgress("videoAds");
-                  triggerSuccess();
-                }}>
-                  💸 Claim Earnings (₹0.50)
-                </button>
-              )}
-            </>
+          {canClaim && (
+            <button className="btn-primary" onClick={() => { 
+              if (Date.now() - startTimeRef.current < 5000) {
+                alert("Security Alert: Invalid completion time detected.");
+                setIsWatching(false); setCanClaim(false); return;
+              }
+              setIsWatching(false); 
+              setCanClaim(false); 
+              addEarnings(0.50);
+              incrementTaskProgress("videoAds");
+              triggerSuccess();
+            }}>
+              💸 Claim Earnings (₹0.50)
+            </button>
           )}
         </div>
       </div>
@@ -211,15 +208,14 @@ function SurveysTask() {
         </div>
 
         <div className="task-execute-box">
-          {isDone ? (
-            <div style={{ color: 'var(--color-success)', fontWeight: 'bold', fontSize: '1.2rem', textAlign: 'center' }}>
-              ✅ Daily Quota Completed!
+          {isDone && (
+            <div style={{ color: 'var(--color-success)', fontWeight: 'bold', fontSize: '1.1rem', textAlign: 'center', marginBottom: '16px' }}>
+              ✅ Daily Quota Completed! Keep earning!
             </div>
-          ) : (
-            <button className="btn-primary" onClick={handleSurvey} disabled={loading}>
-              {loading ? "Completing Survey..." : "📋 Start Survey (₹2.50)"}
-            </button>
           )}
+          <button className="btn-primary" onClick={handleSurvey} disabled={loading}>
+            {loading ? "Completing Survey..." : "📋 Start Survey (₹2.50)"}
+          </button>
         </div>
       </div>
     </div>
@@ -259,15 +255,14 @@ function AppInstallsTask() {
         </div>
 
         <div className="task-execute-box">
-          {isDone ? (
-            <div style={{ color: 'var(--color-success)', fontWeight: 'bold', fontSize: '1.2rem', textAlign: 'center' }}>
-              ✅ Daily Quota Completed!
+          {isDone && (
+            <div style={{ color: 'var(--color-success)', fontWeight: 'bold', fontSize: '1.1rem', textAlign: 'center', marginBottom: '16px' }}>
+              ✅ Daily Quota Completed! Keep earning!
             </div>
-          ) : (
-            <button className="btn-primary" onClick={handleInstall} disabled={loading}>
-              {loading ? "Verifying Install..." : "📲 Install App (₹10.00)"}
-            </button>
           )}
+          <button className="btn-primary" onClick={handleInstall} disabled={loading}>
+            {loading ? "Verifying Install..." : "📲 Install App (₹10.00)"}
+          </button>
         </div>
       </div>
     </div>
@@ -307,15 +302,14 @@ function QuizTask() {
         </div>
 
         <div className="task-execute-box">
-          {isDone ? (
-            <div style={{ color: 'var(--color-success)', fontWeight: 'bold', fontSize: '1.2rem', textAlign: 'center' }}>
-              ✅ Daily Quota Completed!
+          {isDone && (
+            <div style={{ color: 'var(--color-success)', fontWeight: 'bold', fontSize: '1.1rem', textAlign: 'center', marginBottom: '16px' }}>
+              ✅ Daily Quota Completed! Keep earning!
             </div>
-          ) : (
-            <button className="btn-primary" onClick={handleQuiz} disabled={loading}>
-              {loading ? "Submitting Quiz..." : "✅ Answer Quiz (₹1.00)"}
-            </button>
           )}
+          <button className="btn-primary" onClick={handleQuiz} disabled={loading}>
+            {loading ? "Submitting Quiz..." : "✅ Answer Quiz (₹1.00)"}
+          </button>
         </div>
       </div>
     </div>
