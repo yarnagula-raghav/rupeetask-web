@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
+import { useAuth } from "@/context/AuthContext";
 import { useWallet } from "@/context/WalletContext";
 import { motion } from "framer-motion";
 import confetti from "canvas-confetti";
@@ -171,19 +172,27 @@ function AdsTask() {
 
 // ================= 2. Surveys =================
 function SurveysTask() {
+  const { user } = useAuth();
   const { addEarnings, incrementTaskProgress, dailyProgress } = useWallet();
   const [loading, setLoading] = useState(false);
   const maxQuota = 3;
   const isDone = dailyProgress.surveys >= maxQuota;
 
   const handleSurvey = () => {
+    if (!user) return;
+    
+    // Open the real CPX Research Offerwall in a new tab
+    const cpxUrl = `https://offers.cpx-research.com/index.php?app_id=33407&ext_user_id=${user.uid}`;
+    window.open(cpxUrl, '_blank');
+    
+    // For now, we simulate completion after 5 seconds until the backend webhook is built
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
       addEarnings(2.50);
       incrementTaskProgress("surveys");
       triggerSuccess();
-    }, 2000);
+    }, 5000);
   };
 
   return (
