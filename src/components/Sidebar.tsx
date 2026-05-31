@@ -116,6 +116,11 @@ export default function Sidebar({
               <span id="theme-text">{isLight ? "Dark Mode" : "Light Mode"}</span>
             </button>
           </div>
+          <div style={{ marginTop: "16px", display: "flex", justifyContent: "center", gap: "12px", fontSize: "0.75rem" }}>
+            <a href="/privacy" style={{ color: "var(--color-text-secondary)", textDecoration: "none" }}>Privacy</a>
+            <span style={{ color: "var(--color-text-secondary)" }}>|</span>
+            <a href="/terms" style={{ color: "var(--color-text-secondary)", textDecoration: "none" }}>Terms</a>
+          </div>
         </div>
       </aside>
     </>
