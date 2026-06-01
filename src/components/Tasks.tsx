@@ -20,7 +20,7 @@ const triggerSuccess = async () => {
 };
 
 export default function Tasks() {
-  const [activeTab, setActiveTab] = useState<"ads" | "surveys" | "apps" | "quiz" | "monlix">("ads");
+  const [activeTab, setActiveTab] = useState<"ads" | "surveys" | "apps" | "monlix">("ads");
   const { dailyProgress } = useWallet();
 
   return (
@@ -57,13 +57,7 @@ export default function Tasks() {
           >
             📱 Installs ({dailyProgress.appInstalls}/1)
           </button>
-          <button
-            className={`tab-btn ${activeTab === "quiz" ? "active" : ""}`}
-            onClick={() => setActiveTab("quiz")}
-            style={{ flexShrink: 0 }}
-          >
-            🧠 Quiz ({dailyProgress.quiz}/1)
-          </button>
+
 
           <button
             className={`tab-btn ${activeTab === "monlix" ? "active" : ""}`}
@@ -78,7 +72,7 @@ export default function Tasks() {
         {activeTab === "ads" && <AdsTask />}
         {activeTab === "surveys" && <SurveysTask />}
         {activeTab === "apps" && <AppInstallsTask />}
-        {activeTab === "quiz" && <QuizTask />}
+
 
         {activeTab === "monlix" && <MonlixTask />}
       </div>
@@ -300,52 +294,6 @@ function AppInstallsTask() {
   );
 }
 
-// ================= 4. Quiz =================
-function QuizTask() {
-  const { addEarnings, incrementTaskProgress, dailyProgress } = useWallet();
-  const [loading, setLoading] = useState(false);
-  const maxQuota = 1;
-  const isDone = dailyProgress.quiz >= maxQuota;
-
-  const handleQuiz = () => {
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-      addEarnings(1.00);
-      incrementTaskProgress("quiz");
-      triggerSuccess();
-    }, 1500);
-  };
-
-  return (
-    <div className="tab-content active">
-      <div className="task-panel">
-        <div className="task-instructions-card">
-          <h3 style={{ fontWeight: 700, fontSize: "1.15rem", marginBottom: "12px" }}>
-            🧠 Answer Quiz
-          </h3>
-          <p style={{ fontSize: "0.88rem", color: "var(--color-text-secondary)", lineHeight: 1.5 }}>
-            Test your knowledge to earn a reward.
-          </p>
-          <div style={{ marginTop: '12px', padding: '8px', background: 'rgba(0,0,0,0.2)', borderRadius: '8px' }}>
-            <strong>Progress:</strong> {dailyProgress.quiz} / {maxQuota}
-          </div>
-        </div>
-
-        <div className="task-execute-box">
-          {isDone && (
-            <div style={{ color: 'var(--color-success)', fontWeight: 'bold', fontSize: '1.1rem', textAlign: 'center', marginBottom: '16px' }}>
-              ✅ Daily Quota Completed! Keep earning!
-            </div>
-          )}
-          <button className="btn-primary" onClick={handleQuiz} disabled={loading}>
-            {loading ? "Submitting Quiz..." : "✅ Answer Quiz"}
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-}
 
 
 
