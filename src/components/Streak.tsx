@@ -6,14 +6,27 @@ import { motion } from "framer-motion";
 import { useWallet } from "@/context/WalletContext";
 
 export default function Streak() {
-  const { streakCount, lastCheckInDate, claimDailyCheckIn } = useWallet();
+  const { streakCount, lastCheckInDate, claimDailyCheckIn, dailyProgress } = useWallet();
   const [claiming, setClaiming] = useState(false);
   const currentStreak = streakCount;
   
   const todayStr = new Date().toDateString();
   const canClaim = lastCheckInDate !== todayStr;
+  
+  // Hard Mode Requirement
+  const isCompleted = 
+    dailyProgress.videoAds >= 10 &&
+    dailyProgress.surveys >= 3 &&
+    dailyProgress.appInstalls >= 1 &&
+    dailyProgress.spins >= 1 &&
+    dailyProgress.quiz >= 1;
 
   const handleClaim = async () => {
+    if (!isCompleted) {
+      alert("❌ You must complete ALL daily tasks (10 Ads, 3 Surveys, etc.) before you can claim your daily streak!");
+      return;
+    }
+
     setClaiming(true);
     const success = await claimDailyCheckIn();
     setClaiming(false);
@@ -63,16 +76,32 @@ export default function Streak() {
         {/* Claim Button */}
         <div style={{ marginBottom: "24px", textAlign: "center" }}>
           {canClaim ? (
-            <motion.button 
-              className="btn-primary" 
-              style={{ fontSize: "1.2rem", padding: "16px 32px", width: "100%", background: "linear-gradient(90deg, #10b981 0%, #059669 100%)", fontWeight: "bold", boxShadow: "0 0 20px rgba(16, 185, 129, 0.4)" }}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={handleClaim}
-              disabled={claiming}
-            >
-              {claiming ? "Claiming..." : "🎁 Claim Daily Check-In!"}
-            </motion.button>
+            <div>
+              <motion.button 
+                className="btn-primary" 
+                style={{ 
+                  fontSize: "1.2rem", 
+                  padding: "16px 32px", 
+                  width: "100%", 
+                  background: isCompleted ? "linear-gradient(90deg, #10b981 0%, #059669 100%)" : "rgba(255,255,255,0.1)", 
+                  color: isCompleted ? "white" : "rgba(255,255,255,0.5)",
+                  fontWeight: "bold", 
+                  boxShadow: isCompleted ? "0 0 20px rgba(16, 185, 129, 0.4)" : "none",
+                  cursor: isCompleted ? "pointer" : "not-allowed"
+                }}
+                whileHover={isCompleted ? { scale: 1.02 } : {}}
+                whileTap={isCompleted ? { scale: 0.95 } : {}}
+                onClick={handleClaim}
+                disabled={claiming || !isCompleted}
+              >
+                {claiming ? "Claiming..." : isCompleted ? "🎁 Claim Daily Check-In!" : "🔒 Complete All Tasks to Unlock"}
+              </motion.button>
+              {!isCompleted && (
+                <div style={{ marginTop: "12px", color: "var(--color-text-secondary)", fontSize: "0.9rem" }}>
+                  You must finish your Daily Quota (Ads, Surveys, Quiz, etc.) to unlock the check-in!
+                </div>
+              )}
+            </div>
           ) : (
             <div style={{ padding: "16px", background: "rgba(16, 185, 129, 0.1)", border: "1px solid rgba(16, 185, 129, 0.3)", borderRadius: "var(--border-radius-md)", color: "#10b981", fontWeight: "bold" }}>
               ✅ You have already checked in today! Come back tomorrow!

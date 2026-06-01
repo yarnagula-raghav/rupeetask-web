@@ -208,6 +208,16 @@ export const WalletProvider = ({ children }: { children: React.ReactNode }) => {
       return false; // Already checked in today
     }
     
+    // Enforce that all daily tasks must be completed before checking in
+    const isCompleted = 
+      dailyProgress.videoAds >= 10 &&
+      dailyProgress.surveys >= 3 &&
+      dailyProgress.appInstalls >= 1 &&
+      dailyProgress.spins >= 1 &&
+      dailyProgress.quiz >= 1;
+
+    if (!isCompleted) return false;
+    
     // Check if they missed a day to maintain the streak
     let newStreak = 1;
     if (lastCheckInDate) {
