@@ -158,7 +158,7 @@ function AdsTask() {
               incrementTaskProgress("videoAds");
               triggerSuccess();
             }}>
-              💸 Claim Earnings (₹0.50)
+              💸 Claim Earnings
             </button>
           )}
         </div>
@@ -214,7 +214,7 @@ function SurveysTask() {
             </div>
           )}
           <button className="btn-primary" onClick={handleSurvey} disabled={loading}>
-            {loading ? "Completing Survey..." : "📋 Start Survey (₹2.50)"}
+            {loading ? "Loading..." : "📋 Open Surveys"}
           </button>
         </div>
       </div>
@@ -261,7 +261,7 @@ function AppInstallsTask() {
             </div>
           )}
           <button className="btn-primary" onClick={handleInstall} disabled={loading}>
-            {loading ? "Verifying Install..." : "📲 Install App (₹10.00)"}
+            {loading ? "Verifying Install..." : "📲 Install App"}
           </button>
         </div>
       </div>
@@ -308,7 +308,7 @@ function QuizTask() {
             </div>
           )}
           <button className="btn-primary" onClick={handleQuiz} disabled={loading}>
-            {loading ? "Submitting Quiz..." : "✅ Answer Quiz (₹1.00)"}
+            {loading ? "Submitting Quiz..." : "✅ Answer Quiz"}
           </button>
         </div>
       </div>
