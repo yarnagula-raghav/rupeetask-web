@@ -185,11 +185,11 @@ function AdsTask() {
               }
               setIsWatching(false); 
               setCanClaim(false); 
-              addEarnings(0.25);
+              addEarnings(0.01);
               incrementTaskProgress("videoAds");
               triggerSuccess();
             }}>
-              🎁 Claim ₹0.25 Reward!
+              🎁 Claim ₹0.01 Reward!
             </button>
           )}
         </div>
