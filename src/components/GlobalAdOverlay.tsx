@@ -3,7 +3,23 @@
 import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useWallet } from "@/context/WalletContext";
-import { X, PlayCircle } from "lucide-react";
+import { X, PlayCircle, ExternalLink } from "lucide-react";
+
+const AdsterraGlobalBanner = () => {
+  useEffect(() => {
+    if (!document.getElementById("adsterra-script-global-dae73bfcfc3c34cf577e22bcae422257")) {
+      const script = document.createElement("script");
+      script.id = "adsterra-script-global-dae73bfcfc3c34cf577e22bcae422257";
+      script.type = "text/javascript";
+      script.dataset.cfasync = "false";
+      script.src = "//pl25602351.effectivecpmnetwork.com/dae73bfcfc3c34cf577e22bcae422257/invoke.js";
+      script.async = true;
+      document.head.appendChild(script);
+    }
+  }, []);
+
+  return <div id="container-dae73bfcfc3c34cf577e22bcae422257" style={{ minHeight: '60px', width: '100%', display: 'flex', justifyContent: 'center', background: 'rgba(255,255,255,0.05)', borderRadius: '8px', overflow: 'hidden' }}></div>;
+};
 
 export default function GlobalAdOverlay() {
   const { showGlobalAd, setShowGlobalAd, registerGlobalClick } = useWallet();
@@ -60,14 +76,15 @@ export default function GlobalAdOverlay() {
             flexDirection: "column"
           }}
         >
-          <div style={{ textAlign: "center", maxWidth: "400px", padding: "20px" }}>
-            <PlayCircle size={64} color="var(--primary)" style={{ margin: "0 auto 24px auto" }} />
-            <h2 style={{ fontSize: "1.5rem", marginBottom: "16px", color: "white" }}>Sponsor Advertisement</h2>
-            <p style={{ color: "var(--text-muted)", marginBottom: "32px" }}>
-              Please wait while we load our sponsors to keep RupeeTask free.
-              <br /><br />
-              <span style={{ fontSize: "0.85rem", color: "var(--secondary)" }}>(In production, an AdSense/AdMob interstitial will appear here)</span>
-            </p>
+          <div style={{ textAlign: "center", width: "90%", maxWidth: "450px", padding: "24px", background: "var(--bg-card)", borderRadius: "16px", border: "1px solid var(--border-color)", boxShadow: "0 20px 40px rgba(0,0,0,0.5)" }}>
+            <h2 style={{ fontSize: "1.2rem", marginBottom: "16px", color: "var(--text-primary)", display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
+              <ExternalLink size={20} color="var(--color-accent)" /> Sponsor Advertisement
+            </h2>
+            
+            {/* Inject Real Adsterra Ad Here */}
+            <div style={{ marginBottom: '24px' }}>
+              <AdsterraGlobalBanner />
+            </div>
             
             <button
               onClick={() => setShowGlobalAd(false)}

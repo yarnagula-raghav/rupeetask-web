@@ -57,7 +57,7 @@ export const WalletProvider = ({ children }: { children: React.ReactNode }) => {
   const registerGlobalClick = () => {
     setGlobalClickCount(prev => {
       const newCount = prev + 1;
-      if (newCount >= 6) {
+      if (newCount >= 10) {
         setShowGlobalAd(true);
         return 0;
       }
