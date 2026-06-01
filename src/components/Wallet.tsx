@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useWallet } from "@/context/WalletContext";
 import { motion } from "framer-motion";
 import { Haptics, ImpactStyle } from "@capacitor/haptics";
-import { Haptics, ImpactStyle } from "@capacitor/haptics";
 
 const AdsterraWalletBanner = () => {
   useEffect(() => {
