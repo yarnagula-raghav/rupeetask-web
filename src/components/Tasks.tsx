@@ -86,6 +86,23 @@ export default function Tasks() {
   );
 }
 
+// ================= Adsterra Component =================
+const AdsterraBanner = () => {
+  React.useEffect(() => {
+    if (!document.getElementById("adsterra-script-dae73bfcfc3c34cf577e22bcae422257")) {
+      const script = document.createElement("script");
+      script.id = "adsterra-script-dae73bfcfc3c34cf577e22bcae422257";
+      script.type = "text/javascript";
+      script.dataset.cfasync = "false";
+      script.src = "//pl25602351.effectivecpmnetwork.com/dae73bfcfc3c34cf577e22bcae422257/invoke.js";
+      script.async = true;
+      document.head.appendChild(script);
+    }
+  }, []);
+
+  return <div id="container-dae73bfcfc3c34cf577e22bcae422257" style={{ minHeight: '60px', width: '100%', display: 'flex', justifyContent: 'center', margin: '16px 0', background: 'rgba(0,0,0,0.1)', borderRadius: '8px', overflow: 'hidden' }}></div>;
+};
+
 // ================= 1. Video Ads =================
 function AdsTask() {
   const [isWatching, setIsWatching] = useState(false);
@@ -137,6 +154,10 @@ function AdsTask() {
         </div>
 
         <div className="task-execute-box">
+          
+          {/* Adsterra Real Ad Injection */}
+          <AdsterraBanner />
+
           {isDone && (
             <div style={{ color: 'var(--color-success)', fontWeight: 'bold', fontSize: '1.1rem', textAlign: 'center', marginBottom: '16px' }}>
               ✅ Daily Quota Completed! Keep earning!
@@ -149,26 +170,26 @@ function AdsTask() {
           )}
 
           {isWatching && !canClaim && (
-            <div className="ad-screen-mock" style={{ display: "block" }}>
-              <div className="ad-overlay-timer">{timeLeft}s remaining</div>
-              <div className="ad-video-title">AdSense Sponsored Content</div>
-              <div style={{ fontSize: "2.5rem", marginTop: "10px" }}>📺</div>
+            <div className="ad-screen-mock" style={{ display: "block", background: "transparent", border: "1px dashed var(--color-accent)" }}>
+              <div className="ad-overlay-timer" style={{ position: "relative", top: 0, right: 0, margin: "0 auto", width: "fit-content", background: "var(--color-accent)", padding: "4px 12px", borderRadius: "12px", fontSize: "0.9rem" }}>
+                ⏳ Please view the Ad above for {timeLeft} seconds to claim your reward!
+              </div>
             </div>
           )}
 
           {canClaim && (
-            <button className="btn-primary" onClick={() => { 
+            <button className="btn-primary" style={{ background: "linear-gradient(90deg, #10b981 0%, #059669 100%)", animation: "pulse 2s infinite" }} onClick={() => { 
               if (Date.now() - startTimeRef.current < 5000) {
                 alert("Security Alert: Invalid completion time detected.");
                 setIsWatching(false); setCanClaim(false); return;
               }
               setIsWatching(false); 
               setCanClaim(false); 
-              addEarnings(0.50);
+              addEarnings(0.25);
               incrementTaskProgress("videoAds");
               triggerSuccess();
             }}>
-              💸 Claim Earnings
+              🎁 Claim ₹0.25 Reward!
             </button>
           )}
         </div>
