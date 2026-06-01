@@ -14,6 +14,8 @@ export default function AuthOverlay() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [showSplash, setShowSplash] = useState(true);
+  const [agreeTerms, setAgreeTerms] = useState(false);
+  const [showTermsModal, setShowTermsModal] = useState(false);
   const { user, login, signup } = useAuth();
 
   useEffect(() => {
@@ -26,6 +28,10 @@ export default function AuthOverlay() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
+    if (tab === "signup" && !agreeTerms) {
+      setError("You must agree to the Terms and Conditions to create an account.");
+      return;
+    }
     setLoading(true);
     try {
       if (tab === "signin") {
@@ -209,12 +215,97 @@ export default function AuthOverlay() {
                 </div>
               </div>
 
+              {tab === "signup" && (
+                <div className="auth-form-group" style={{ display: "flex", alignItems: "center", gap: "10px", marginTop: "12px", marginBottom: "8px" }}>
+                  <input
+                    type="checkbox"
+                    id="terms-checkbox"
+                    checked={agreeTerms}
+                    onChange={(e) => setAgreeTerms(e.target.checked)}
+                    style={{ width: "18px", height: "18px", cursor: "pointer", accentColor: "var(--color-brand)" }}
+                  />
+                  <label htmlFor="terms-checkbox" style={{ fontSize: "0.85rem", color: "var(--color-text-secondary)", cursor: "pointer", userSelect: "none" }}>
+                    I agree to the <span onClick={(e) => { e.preventDefault(); setShowTermsModal(true); }} style={{ color: "var(--color-brand)", textDecoration: "underline" }}>Terms and Conditions</span>
+                  </label>
+                </div>
+              )}
+
               <button type="submit" className={`auth-submit-btn ${loading ? "loading" : ""}`} disabled={loading}>
                 <span className="btn-text">
                   {tab === "signin" ? "Sign In" : "Sign Up"}
                 </span>
               </button>
             </form>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {showTermsModal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            style={{
+              position: "fixed",
+              top: 0, left: 0, right: 0, bottom: 0,
+              backgroundColor: "rgba(0,0,0,0.8)",
+              zIndex: 100000,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              padding: "20px"
+            }}
+          >
+            <motion.div
+              initial={{ y: 50, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: 50, opacity: 0 }}
+              style={{
+                backgroundColor: "#060814",
+                padding: "30px",
+                borderRadius: "16px",
+                border: "1px solid rgba(255,255,255,0.1)",
+                maxWidth: "500px",
+                width: "100%",
+                maxHeight: "85vh",
+                overflowY: "auto",
+                color: "white"
+              }}
+            >
+              <h2 style={{ fontSize: "1.5rem", fontWeight: 700, marginBottom: "20px" }}>Terms of Service</h2>
+              
+              <p style={{ marginBottom: "15px", lineHeight: "1.6", color: "var(--color-text-secondary)", fontSize: "0.9rem" }}>
+                By accessing or using RupeeTask, you agree to be bound by these Terms. If you disagree with any part of the terms, you do not have permission to access the Service.
+              </p>
+              
+              <h3 style={{ marginTop: "20px", marginBottom: "8px", fontSize: "1.1rem" }}>Earning and Payouts</h3>
+              <p style={{ marginBottom: "15px", lineHeight: "1.6", color: "var(--color-text-secondary)", fontSize: "0.9rem" }}>
+                Users may earn digital currency by completing tasks, surveys, and offers provided by our third-party advertising partners. All earnings are subject to verification. We reserve the right to withhold payouts, reverse earnings, or ban accounts if we detect fraudulent activity, VPN usage, proxy usage, or automated bots.
+              </p>
+              
+              <h3 style={{ marginTop: "20px", marginBottom: "8px", fontSize: "1.1rem" }}>User Conduct</h3>
+              <p style={{ marginBottom: "25px", lineHeight: "1.6", color: "var(--color-text-secondary)", fontSize: "0.9rem" }}>
+                You agree not to use the Service for any unlawful purpose or any purpose prohibited under this clause. You agree not to use the Service in any way that could damage the Service, Services, or general business of RupeeTask.
+              </p>
+              
+              <button
+                type="button"
+                onClick={() => { setShowTermsModal(false); setAgreeTerms(true); }}
+                style={{
+                  width: "100%",
+                  padding: "14px",
+                  backgroundColor: "var(--color-brand)",
+                  color: "white",
+                  border: "none",
+                  borderRadius: "8px",
+                  fontWeight: 700,
+                  cursor: "pointer"
+                }}
+              >
+                I Agree & Close
+              </button>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>

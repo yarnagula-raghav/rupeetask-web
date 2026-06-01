@@ -25,7 +25,22 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+      if (currentUser) {
+        try {
+          const { doc, getDoc } = await import("firebase/firestore");
+          const userDoc = await getDoc(doc(db, "users", currentUser.uid));
+          if (userDoc.exists() && userDoc.data().isBanned) {
+            await signOut(auth);
+            alert("SECURITY ALERT: Your account has been permanently suspended for violating the Terms of Service.");
+            setUser(null);
+            setLoading(false);
+            return;
+          }
+        } catch (e) {
+          console.error("Failed to check ban status");
+        }
+      }
       setUser(currentUser);
       setLoading(false);
     });

@@ -65,6 +65,18 @@ export async function GET(request: Request) {
         lifetimeEarnings: currentLifetime + amount,
         "dailyProgress.surveys": dailyProgress.surveys + 1
       });
+
+      // Create an activity log for the admin dashboard
+      const activityRef = db.collection("activity_logs").doc();
+      transaction.set(activityRef, {
+        type: "SURVEY_COMPLETED",
+        userId: userId,
+        userName: userData?.name || "Unknown User",
+        userEmail: userData?.email || "Unknown Email",
+        amount: amount,
+        network: "CPX Research",
+        timestamp: admin.firestore.FieldValue.serverTimestamp()
+      });
     });
 
     return NextResponse.json({ success: true, message: `Credited user ${userId} with ${amount}` });
