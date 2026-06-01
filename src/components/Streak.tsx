@@ -1,13 +1,26 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 
 import { useWallet } from "@/context/WalletContext";
 
 export default function Streak() {
-  const { streakCount } = useWallet();
+  const { streakCount, lastCheckInDate, claimDailyCheckIn } = useWallet();
+  const [claiming, setClaiming] = useState(false);
   const currentStreak = streakCount;
+  
+  const todayStr = new Date().toDateString();
+  const canClaim = lastCheckInDate !== todayStr;
+
+  const handleClaim = async () => {
+    setClaiming(true);
+    const success = await claimDailyCheckIn();
+    setClaiming(false);
+    if (success) {
+      alert("🎉 Check-in successful! Bonus added to your wallet.");
+    }
+  };
 
   return (
     <motion.section 
@@ -45,6 +58,26 @@ export default function Streak() {
             <li>📍 <strong>Day 21 Milestone:</strong> Unlocks a <span style={{ color: "var(--color-success)", fontWeight: 600 }}>₹40 bonus</span>!</li>
             <li>📍 <strong>Day 30 Milestone:</strong> Unlocks the ultimate <span style={{ color: "var(--color-accent)", fontWeight: 700 }}>₹80 bonus</span>!</li>
           </ul>
+        </div>
+
+        {/* Claim Button */}
+        <div style={{ marginBottom: "24px", textAlign: "center" }}>
+          {canClaim ? (
+            <motion.button 
+              className="btn-primary" 
+              style={{ fontSize: "1.2rem", padding: "16px 32px", width: "100%", background: "linear-gradient(90deg, #10b981 0%, #059669 100%)", fontWeight: "bold", boxShadow: "0 0 20px rgba(16, 185, 129, 0.4)" }}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={handleClaim}
+              disabled={claiming}
+            >
+              {claiming ? "Claiming..." : "🎁 Claim Daily Check-In!"}
+            </motion.button>
+          ) : (
+            <div style={{ padding: "16px", background: "rgba(16, 185, 129, 0.1)", border: "1px solid rgba(16, 185, 129, 0.3)", borderRadius: "var(--border-radius-md)", color: "#10b981", fontWeight: "bold" }}>
+              ✅ You have already checked in today! Come back tomorrow!
+            </div>
+          )}
         </div>
 
         {/* 30-Day Grid */}

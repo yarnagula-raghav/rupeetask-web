@@ -201,31 +201,43 @@ export const WalletProvider = ({ children }: { children: React.ReactNode }) => {
   const claimDailyCheckIn = async (): Promise<boolean> => {
     if (!user) return false;
     
-    const today = new Date().toDateString();
-    if (lastCheckInDate === today) {
+    const today = new Date();
+    const todayStr = today.toDateString();
+    
+    if (lastCheckInDate === todayStr) {
       return false; // Already checked in today
     }
     
-    // Check if daily tasks are completed
-    const isCompleted = 
-      dailyProgress.videoAds >= 10 &&
-      dailyProgress.surveys >= 3 &&
-      dailyProgress.appInstalls >= 1 &&
-      dailyProgress.spins >= 1 &&
-      dailyProgress.quiz >= 1;
+    // Check if they missed a day to maintain the streak
+    let newStreak = 1;
+    if (lastCheckInDate) {
+      const lastDate = new Date(lastCheckInDate);
+      
+      // Calculate difference in days (ignoring hours)
+      today.setHours(0, 0, 0, 0);
+      lastDate.setHours(0, 0, 0, 0);
+      const diffTime = today.getTime() - lastDate.getTime();
+      const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24)); 
+      
+      if (diffDays === 1) {
+        // They checked in exactly yesterday
+        newStreak = streakCount + 1;
+      } else {
+        // They missed a day (or more), reset streak to 1
+        newStreak = 1;
+      }
+    }
 
-    if (!isCompleted) return false;
-
-    // Check streak milestones
-    let newStreak = streakCount + 1;
-    let bonus = (Math.random() * 4.8) + 0.2; // Base bonus
+    let bonus = (Math.random() * 2) + 0.5; // Base small bonus between 0.5 and 2.5
     
+    // Milestone Bonuses
     if (newStreak === 7) bonus += 10;
     else if (newStreak === 14) bonus += 20;
     else if (newStreak === 21) bonus += 40;
     else if (newStreak === 30) bonus += 80;
     else if (newStreak > 30) {
       newStreak = 1; // reset streak after 30 days
+      bonus += 100; // Grand reset bonus
     }
     
     // Optimistic update
@@ -233,7 +245,7 @@ export const WalletProvider = ({ children }: { children: React.ReactNode }) => {
     const newLifetime = lifetimeEarnings + bonus;
     setBalance(newBalance);
     setLifetimeEarnings(newLifetime);
-    setLastCheckInDate(today);
+    setLastCheckInDate(todayStr);
     setStreakCount(newStreak);
     
     // Also mark login task as done
@@ -244,7 +256,7 @@ export const WalletProvider = ({ children }: { children: React.ReactNode }) => {
     await updateDoc(userDocRef, {
       balance: newBalance,
       lifetimeEarnings: newLifetime,
-      lastCheckInDate: today,
+      lastCheckInDate: todayStr,
       streakCount: newStreak,
       dailyProgress: newProgress
     });
