@@ -120,10 +120,14 @@ export default function Sidebar({
               <span id="theme-text">{isLight ? "Dark Mode" : "Light Mode"}</span>
             </button>
           </div>
-          <div style={{ marginTop: "16px", display: "flex", justifyContent: "center", gap: "12px", fontSize: "0.75rem" }}>
+          <div style={{ marginTop: "16px", display: "flex", flexWrap: "wrap", justifyContent: "center", gap: "8px", fontSize: "0.7rem", textAlign: "center" }}>
+            <a href="/faq" style={{ color: "var(--color-text-secondary)", textDecoration: "none" }}>FAQ</a>
+            <span style={{ color: "var(--color-text-muted)" }}>•</span>
             <a href="/privacy" style={{ color: "var(--color-text-secondary)", textDecoration: "none" }}>Privacy</a>
-            <span style={{ color: "var(--color-text-secondary)" }}>|</span>
+            <span style={{ color: "var(--color-text-muted)" }}>•</span>
             <a href="/terms" style={{ color: "var(--color-text-secondary)", textDecoration: "none" }}>Terms</a>
+            <span style={{ color: "var(--color-text-muted)" }}>•</span>
+            <a href="/fraud-policy" style={{ color: "#ef4444", textDecoration: "none", fontWeight: 600 }}>Fraud Policy</a>
           </div>
         </div>
       </aside>
