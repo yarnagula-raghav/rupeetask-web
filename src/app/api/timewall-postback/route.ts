@@ -1,5 +1,22 @@
 import { NextResponse } from "next/server";
-import { db } from "@/lib/firebase-admin";
+import * as admin from "firebase-admin";
+
+// Initialize Firebase Admin if it hasn't been already
+if (!admin.apps.length) {
+  try {
+    admin.initializeApp({
+      credential: admin.credential.cert({
+        projectId: process.env.FIREBASE_PROJECT_ID,
+        clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+        privateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
+      }),
+    });
+  } catch (error) {
+    console.error("Firebase admin initialization error", error);
+  }
+}
+
+const db = admin.firestore();
 
 // TimeWall Postback API
 // Typically expects: ?subId={user_id}&reward={amount}&signature={hash}
