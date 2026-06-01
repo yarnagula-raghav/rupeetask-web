@@ -20,7 +20,7 @@ const triggerSuccess = async () => {
 };
 
 export default function Tasks() {
-  const [activeTab, setActiveTab] = useState<"ads" | "surveys" | "apps" | "quiz" | "timewall" | "monlix">("ads");
+  const [activeTab, setActiveTab] = useState<"ads" | "surveys" | "apps" | "quiz" | "monlix">("ads");
   const { dailyProgress } = useWallet();
 
   return (
@@ -64,13 +64,7 @@ export default function Tasks() {
           >
             🧠 Quiz ({dailyProgress.quiz}/1)
           </button>
-          <button
-            className={`tab-btn ${activeTab === "timewall" ? "active" : ""}`}
-            onClick={() => setActiveTab("timewall")}
-            style={{ flexShrink: 0, border: "1px solid #ef4444", color: "#ef4444" }}
-          >
-            ⏳ TimeWall
-          </button>
+
           <button
             className={`tab-btn ${activeTab === "monlix" ? "active" : ""}`}
             onClick={() => setActiveTab("monlix")}
@@ -85,7 +79,7 @@ export default function Tasks() {
         {activeTab === "surveys" && <SurveysTask />}
         {activeTab === "apps" && <AppInstallsTask />}
         {activeTab === "quiz" && <QuizTask />}
-        {activeTab === "timewall" && <TimeWallTask />}
+
         {activeTab === "monlix" && <MonlixTask />}
       </div>
     </motion.section>
@@ -332,33 +326,7 @@ function QuizTask() {
   );
 }
 
-// ================= 5. TimeWall =================
-function TimeWallTask() {
-  return (
-    <div className="tab-content active">
-      <div className="task-panel">
-        <div className="task-instructions-card">
-          <h3 style={{ fontWeight: 700, fontSize: "1.15rem", marginBottom: "12px", color: "#ef4444" }}>
-            ⏳ TimeWall Offers (NEW)
-          </h3>
-          <p style={{ fontSize: "0.88rem", color: "var(--color-text-secondary)", lineHeight: 1.5 }}>
-            Complete micro-tasks, clicks, and surveys to earn quick rewards!
-          </p>
-        </div>
 
-        <div className="task-execute-box">
-          <button 
-            className="btn-primary" 
-            style={{ background: "linear-gradient(90deg, #ef4444 0%, #b91c1c 100%)" }}
-            onClick={() => alert("TimeWall is currently pending network approval. Once your API keys are generated, this button will go live automatically!")}
-          >
-            ⏳ Open TimeWall (Pending Approval)
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-}
 
 // ================= 6. Monlix =================
 function MonlixTask() {
