@@ -20,7 +20,7 @@ const triggerSuccess = async () => {
 };
 
 export default function Tasks() {
-  const [activeTab, setActiveTab] = useState<"ads" | "surveys" | "apps" | "monlix">("ads");
+  const [activeTab, setActiveTab] = useState<"ads" | "surveys" | "apps" | "monlix" | "theoremreach">("ads");
   const { dailyProgress } = useWallet();
 
   return (
@@ -66,6 +66,13 @@ export default function Tasks() {
           >
             🤑 Monlix
           </button>
+          <button
+            className={`tab-btn ${activeTab === "theoremreach" ? "active" : ""}`}
+            onClick={() => setActiveTab("theoremreach")}
+            style={{ flexShrink: 0, border: "1px solid #a855f7", color: "#a855f7" }}
+          >
+            📊 TheoremReach
+          </button>
         </div>
 
         {/* Tab Contents */}
@@ -75,6 +82,7 @@ export default function Tasks() {
 
 
         {activeTab === "monlix" && <MonlixTask />}
+        {activeTab === "theoremreach" && <TheoremReachTask />}
       </div>
     </motion.section>
   );
