@@ -18,18 +18,11 @@ import GlobalAdOverlay from "@/components/GlobalAdOverlay";
 import { useEffect } from "react";
 
 const AdsterraGlobalBannerTop = () => {
-  useEffect(() => {
-    if (!document.getElementById("adsterra-script-top-dae73bfcfc3c34cf577e22bcae422257")) {
-      const script = document.createElement("script");
-      script.id = "adsterra-script-top-dae73bfcfc3c34cf577e22bcae422257";
-      script.type = "text/javascript";
-      script.dataset.cfasync = "false";
-      script.src = "//pl25602351.effectivecpmnetwork.com/dae73bfcfc3c34cf577e22bcae422257/invoke.js";
-      script.async = true;
-      document.head.appendChild(script);
-    }
-  }, []);
-  return <div id="container-dae73bfcfc3c34cf577e22bcae422257" style={{ minHeight: '60px', width: '100%', display: 'flex', justifyContent: 'center', background: 'rgba(0,0,0,0.3)', borderBottom: '1px solid var(--border-color)', padding: '8px 0' }}></div>;
+  return (
+    <div style={{ width: '100%', display: 'flex', justifyContent: 'center', background: 'rgba(0,0,0,0.3)', borderBottom: '1px solid var(--border-color)', padding: '8px 0' }}>
+      <iframe src="/ad728.html" width="728" height="90" frameBorder="0" scrolling="no" style={{ maxWidth: '100%', overflow: 'hidden' }}></iframe>
+    </div>
+  );
 };
 
 const AdsterraGlobalBannerBottom = () => {
