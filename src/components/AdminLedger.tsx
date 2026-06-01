@@ -1,17 +1,105 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useWallet } from "@/context/WalletContext";
+import { useAuth } from "@/context/AuthContext";
+import { db } from "@/firebase";
+import { collection, query, onSnapshot, doc, updateDoc, runTransaction } from "firebase/firestore";
 
 export default function AdminLedger() {
+  const { user } = useAuth();
   const { getGrossPlatformRevenue, getAdminShare, getTotalUserEarnings } = useWallet();
+
+  const [withdrawals, setWithdrawals] = useState<any[]>([]);
+  const [users, setUsers] = useState<any[]>([]);
+  const [activeTab, setActiveTab] = useState<"withdrawals" | "users">("withdrawals");
+
+  const isAdmin = user?.email === "ruppetask2025@gmail.com" || user?.email === "rupeetask2025@gmail.com";
+
+  useEffect(() => {
+    if (!isAdmin) return;
+
+    // Listen to withdrawals
+    const qW = query(collection(db, "withdrawals"));
+    const unsubW = onSnapshot(qW, (snapshot) => {
+      const wList: any[] = [];
+      snapshot.forEach((doc) => {
+        wList.push({ id: doc.id, ...doc.data() });
+      });
+      // Sort pending first, then by date descending
+      wList.sort((a, b) => {
+        if (a.status === "pending" && b.status !== "pending") return -1;
+        if (a.status !== "pending" && b.status === "pending") return 1;
+        return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+      });
+      setWithdrawals(wList);
+    });
+
+    // Listen to users
+    const qU = query(collection(db, "users"));
+    const unsubU = onSnapshot(qU, (snapshot) => {
+      const uList: any[] = [];
+      snapshot.forEach((doc) => {
+        uList.push({ id: doc.id, ...doc.data() });
+      });
+      // Sort by balance descending
+      uList.sort((a, b) => (b.balance || 0) - (a.balance || 0));
+      setUsers(uList);
+    });
+
+    return () => {
+      unsubW();
+      unsubU();
+    };
+  }, [isAdmin]);
+
+  const handleApprove = async (withdrawalId: string) => {
+    if (!confirm("Are you sure you want to mark this as PAID?")) return;
+    try {
+      const wRef = doc(db, "withdrawals", withdrawalId);
+      await updateDoc(wRef, { status: "paid" });
+    } catch (e) {
+      console.error(e);
+      alert("Error approving");
+    }
+  };
+
+  const handleReject = async (withdrawalId: string, userId: string, amount: number) => {
+    if (!confirm("Are you sure you want to REJECT? This will refund the amount back to the user's wallet.")) return;
+    try {
+      await runTransaction(db, async (transaction) => {
+        const wRef = doc(db, "withdrawals", withdrawalId);
+        const uRef = doc(db, "users", userId);
+        
+        const userDoc = await transaction.get(uRef);
+        if (!userDoc.exists()) throw "User not found";
+        
+        const currentBalance = userDoc.data().balance || 0;
+        
+        transaction.update(wRef, { status: "rejected" });
+        transaction.update(uRef, { balance: currentBalance + amount });
+      });
+    } catch (e) {
+      console.error(e);
+      alert("Error rejecting");
+    }
+  };
+
+  if (!isAdmin) {
+    return (
+      <div style={{ padding: "40px", textAlign: "center", color: "#f87171" }}>
+        <h2>Access Denied</h2>
+        <p>This is a highly restricted area.</p>
+      </div>
+    );
+  }
 
   const totalRevenue = getGrossPlatformRevenue();
   const adminShare = getAdminShare();
   const userEarnings = getTotalUserEarnings();
 
-  const progressPercent = totalRevenue > 0 ? (adminShare / totalRevenue) * 100 : 0;
+  const pendingWithdrawals = withdrawals.filter(w => w.status === "pending");
 
   return (
     <motion.section 
@@ -23,14 +111,17 @@ export default function AdminLedger() {
       exit={{ opacity: 0, scale: 0.95 }}
       transition={{ duration: 0.3 }}
     >
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "24px" }}>
+        <h2 style={{ margin: 0 }}>🚨 Secret Admin Dashboard</h2>
+        <span style={{ background: "rgba(52,211,153,0.2)", color: "#34d399", padding: "4px 12px", borderRadius: "12px", fontSize: "0.85rem", fontWeight: 700 }}>Admin Authenticated</span>
+      </div>
+
       <div className="admin-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "20px", marginBottom: "32px" }}>
-        
         {/* Total Ad Revenue */}
         <motion.div whileHover={{ scale: 1.02 }} className="glass-card stat-card" style={{ background: "rgba(0,0,0,0.4)", borderLeft: "4px solid var(--color-brand)" }}>
           <div className="stat-info">
             <span className="stat-label">💰 Total Gross Ad Revenue</span>
-            <div className="stat-value" id="admin-total-revenue">₹{totalRevenue.toFixed(2)}</div>
-            <span className="stat-subtext">Money received from corporate advertisers</span>
+            <div className="stat-value">₹{totalRevenue.toFixed(2)}</div>
           </div>
         </motion.div>
 
@@ -38,87 +129,98 @@ export default function AdminLedger() {
         <motion.div whileHover={{ scale: 1.02 }} className="glass-card stat-card" style={{ background: "rgba(0,0,0,0.4)", borderLeft: "4px solid var(--color-success)" }}>
           <div className="stat-info">
             <span className="stat-label">📈 Platform Profit (70%)</span>
-            <div className="stat-value" id="admin-platform-profit">₹{adminShare.toFixed(2)}</div>
-            <span className="stat-subtext">Net earnings for RupeeTask</span>
+            <div className="stat-value">₹{adminShare.toFixed(2)}</div>
           </div>
         </motion.div>
 
-        {/* User Payout Liability */}
+        {/* Pending Payout Liability */}
         <motion.div whileHover={{ scale: 1.02 }} className="glass-card stat-card" style={{ background: "rgba(0,0,0,0.4)", borderLeft: "4px solid var(--color-warning)" }}>
           <div className="stat-info">
-            <span className="stat-label">💳 User Payout Liability (30%)</span>
-            <div className="stat-value" id="admin-user-liability">₹{userEarnings.toFixed(2)}</div>
-            <span className="stat-subtext">Money owed to users</span>
+            <span className="stat-label">💳 Pending Payouts</span>
+            <div className="stat-value">₹{pendingWithdrawals.reduce((sum, w) => sum + (w.amount || 0), 0).toFixed(2)}</div>
           </div>
         </motion.div>
       </div>
 
-      {/* Visual Split Bar */}
-      <div className="glass-card" style={{ marginBottom: "32px" }}>
-        <h3 style={{ fontSize: "1.1rem", fontWeight: 700, marginBottom: "16px" }}>📊 Platform Revenue Split (70/30 Model)</h3>
-        
-        <div style={{ height: "24px", width: "100%", background: "rgba(0,0,0,0.3)", borderRadius: "12px", overflow: "hidden", display: "flex", border: "1px solid var(--border-light)" }}>
-          <motion.div 
-            id="admin-bar-platform" 
-            initial={{ width: 0 }}
-            animate={{ width: "70%" }}
-            transition={{ duration: 1, ease: "easeOut" }}
-            style={{ background: "linear-gradient(90deg, #10b981, #059669)", display: "flex", alignItems: "center", justifyContent: "center", color: "#fff", fontSize: "0.75rem", fontWeight: 700 }}
-          >
-            Platform (70%)
-          </motion.div>
-          <motion.div 
-            id="admin-bar-users" 
-            initial={{ width: 0 }}
-            animate={{ width: "30%" }}
-            transition={{ duration: 1, ease: "easeOut", delay: 0.2 }}
-            style={{ background: "linear-gradient(90deg, #f59e0b, #d97706)", display: "flex", alignItems: "center", justifyContent: "center", color: "#fff", fontSize: "0.75rem", fontWeight: 700 }}
-          >
-            Users (30%)
-          </motion.div>
-        </div>
+      <div style={{ display: "flex", gap: "12px", marginBottom: "20px" }}>
+        <button 
+          onClick={() => setActiveTab("withdrawals")}
+          style={{ flex: 1, padding: "12px", borderRadius: "8px", border: "none", background: activeTab === "withdrawals" ? "var(--color-brand)" : "rgba(255,255,255,0.1)", color: "#fff", cursor: "pointer", fontWeight: 600 }}
+        >
+          Pending Withdrawals ({pendingWithdrawals.length})
+        </button>
+        <button 
+          onClick={() => setActiveTab("users")}
+          style={{ flex: 1, padding: "12px", borderRadius: "8px", border: "none", background: activeTab === "users" ? "var(--color-brand)" : "rgba(255,255,255,0.1)", color: "#fff", cursor: "pointer", fontWeight: 600 }}
+        >
+          All Users ({users.length})
+        </button>
       </div>
 
-      {/* Task Verification Hub */}
-      <div className="glass-card">
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "16px" }}>
-          <h3 style={{ fontSize: "1.1rem", fontWeight: 700 }}>🔍 Task Verification Hub</h3>
-          <span style={{ fontSize: "0.8rem", color: "var(--color-text-secondary)", background: "rgba(0,0,0,0.3)", padding: "4px 12px", borderRadius: "20px" }}>
-            Pending Review: <strong style={{ color: "#fff" }}>3</strong>
-          </span>
-        </div>
+      <div className="glass-card" style={{ padding: "0" }}>
         
-        <div style={{ background: "rgba(0,0,0,0.2)", borderRadius: "12px", border: "1px solid var(--border-light)", overflow: "hidden" }}>
-          
-          {/* Item 1 */}
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "16px", borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
-            <div>
-              <div style={{ fontWeight: 600, fontSize: "0.95rem" }}>🤖 AI Video Dataset</div>
-              <div style={{ fontSize: "0.75rem", color: "var(--color-text-muted)", marginTop: "4px" }}>
-                User: user123 • Submitted: 10 mins ago
+        {activeTab === "withdrawals" && (
+          <div style={{ padding: "16px" }}>
+            {withdrawals.length === 0 ? (
+              <div style={{ textAlign: "center", padding: "20px", color: "var(--color-text-muted)" }}>No withdrawals found.</div>
+            ) : (
+              <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+                {withdrawals.map((w) => (
+                  <div key={w.id} style={{ display: "flex", flexWrap: "wrap", justifyContent: "space-between", alignItems: "center", padding: "16px", background: "rgba(0,0,0,0.2)", borderRadius: "8px", border: "1px solid var(--border-light)" }}>
+                    <div style={{ minWidth: "200px", flex: 1 }}>
+                      <div style={{ fontWeight: 600, fontSize: "1rem", color: w.status === "pending" ? "#f59e0b" : w.status === "paid" ? "#10b981" : "#ef4444" }}>
+                        ₹{w.amount} - {w.status.toUpperCase()}
+                      </div>
+                      <div style={{ fontSize: "0.8rem", color: "var(--color-text-secondary)", marginTop: "4px" }}>User: {w.userEmail || w.userName}</div>
+                      <div style={{ fontSize: "0.8rem", color: "var(--color-text-primary)", marginTop: "4px" }}>Method: {w.method}</div>
+                      <div style={{ fontSize: "0.8rem", color: "var(--color-text-primary)", marginTop: "4px" }}>Details: <span style={{ color: "#fff", fontWeight: 700 }}>{w.details}</span></div>
+                      <div style={{ fontSize: "0.7rem", color: "var(--color-text-muted)", marginTop: "4px" }}>{new Date(w.createdAt).toLocaleString()}</div>
+                    </div>
+                    
+                    {w.status === "pending" && (
+                      <div style={{ display: "flex", gap: "8px", marginTop: "12px" }}>
+                        <button onClick={() => handleApprove(w.id)} style={{ background: "rgba(52, 211, 153, 0.2)", color: "#34d399", border: "1px solid #34d399", padding: "8px 16px", borderRadius: "6px", cursor: "pointer", fontWeight: 600 }}>Approve (Mark Paid)</button>
+                        <button onClick={() => handleReject(w.id, w.userId, w.amount)} style={{ background: "rgba(248, 113, 113, 0.2)", color: "#f87171", border: "1px solid #f87171", padding: "8px 16px", borderRadius: "6px", cursor: "pointer", fontWeight: 600 }}>Reject (Refund)</button>
+                      </div>
+                    )}
+                  </div>
+                ))}
               </div>
-            </div>
-            <div style={{ display: "flex", gap: "8px" }}>
-              <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} style={{ background: "rgba(52, 211, 153, 0.2)", color: "#34d399", border: "1px solid #34d399", padding: "6px 12px", borderRadius: "6px", cursor: "pointer", fontSize: "0.8rem", fontWeight: 600 }}>Approve</motion.button>
-              <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} style={{ background: "rgba(248, 113, 113, 0.2)", color: "#f87171", border: "1px solid #f87171", padding: "6px 12px", borderRadius: "6px", cursor: "pointer", fontSize: "0.8rem", fontWeight: 600 }}>Reject</motion.button>
-            </div>
+            )}
           </div>
+        )}
 
-          {/* Item 2 */}
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "16px", borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
-            <div>
-              <div style={{ fontWeight: 600, fontSize: "0.95rem" }}>📱 Short Ad Click</div>
-              <div style={{ fontSize: "0.75rem", color: "var(--color-text-muted)", marginTop: "4px" }}>
-                User: anon_77 • Submitted: 1 hr ago
+        {activeTab === "users" && (
+          <div style={{ padding: "16px" }}>
+            {users.length === 0 ? (
+              <div style={{ textAlign: "center", padding: "20px", color: "var(--color-text-muted)" }}>No users found.</div>
+            ) : (
+              <div style={{ overflowX: "auto" }}>
+                <table style={{ width: "100%", textAlign: "left", borderCollapse: "collapse" }}>
+                  <thead>
+                    <tr style={{ borderBottom: "1px solid var(--border-light)", color: "var(--color-text-muted)" }}>
+                      <th style={{ padding: "12px" }}>Email</th>
+                      <th style={{ padding: "12px" }}>Balance</th>
+                      <th style={{ padding: "12px" }}>Lifetime Earned</th>
+                      <th style={{ padding: "12px" }}>Joined</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {users.map(u => (
+                      <tr key={u.id} style={{ borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
+                        <td style={{ padding: "12px" }}>{u.email}</td>
+                        <td style={{ padding: "12px", color: "#34d399", fontWeight: 600 }}>₹{(u.balance || 0).toFixed(2)}</td>
+                        <td style={{ padding: "12px" }}>₹{(u.lifetimeEarnings || 0).toFixed(2)}</td>
+                        <td style={{ padding: "12px", fontSize: "0.8rem", color: "var(--color-text-muted)" }}>{new Date(u.createdAt).toLocaleDateString()}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
               </div>
-            </div>
-            <div style={{ display: "flex", gap: "8px" }}>
-              <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} style={{ background: "rgba(52, 211, 153, 0.2)", color: "#34d399", border: "1px solid #34d399", padding: "6px 12px", borderRadius: "6px", cursor: "pointer", fontSize: "0.8rem", fontWeight: 600 }}>Approve</motion.button>
-              <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} style={{ background: "rgba(248, 113, 113, 0.2)", color: "#f87171", border: "1px solid #f87171", padding: "6px 12px", borderRadius: "6px", cursor: "pointer", fontSize: "0.8rem", fontWeight: 600 }}>Reject</motion.button>
-            </div>
+            )}
           </div>
+        )}
 
-        </div>
       </div>
     </motion.section>
   );
