@@ -91,6 +91,10 @@ export default function Sidebar({
           ))}
         </nav>
 
+        <div style={{ marginTop: 'auto', display: 'flex', justifyContent: 'center', padding: '12px 0' }}>
+          <iframe src="/ad160.html" width="160" height="300" frameBorder="0" scrolling="no" style={{ borderRadius: '8px', overflow: 'hidden', border: '1px solid var(--border-color)' }}></iframe>
+        </div>
+
         <div className="sidebar-footer">
           <div style={{ display: "flex", gap: "8px" }}>
             <button
