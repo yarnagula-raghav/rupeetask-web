@@ -9,6 +9,30 @@ import { Haptics, ImpactStyle } from "@capacitor/haptics";
 
 const SPIN_PRIZES = ["₹1", "₹2", "₹5", "₹3", "₹10", "₹1", "₹2", "₹5"];
 
+const AdsterraDashboardBanner = () => {
+  React.useEffect(() => {
+    if (!document.getElementById("adsterra-script-dashboard-dae73bfcfc3c34cf577e22bcae422257")) {
+      const script = document.createElement("script");
+      script.id = "adsterra-script-dashboard-dae73bfcfc3c34cf577e22bcae422257";
+      script.type = "text/javascript";
+      script.dataset.cfasync = "false";
+      script.src = "//pl25602351.effectivecpmnetwork.com/dae73bfcfc3c34cf577e22bcae422257/invoke.js";
+      script.async = true;
+      document.head.appendChild(script);
+    }
+  }, []);
+
+  return (
+    <motion.div whileHover={{ scale: 1.02 }} className="glass-card stat-card" style={{ gridColumn: "1 / -1", padding: '0', overflow: 'hidden' }}>
+      <div style={{ padding: '16px', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
+        <span className="stat-label" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>✨ Recommended Sponsor</span>
+      </div>
+      <div id="container-dae73bfcfc3c34cf577e22bcae422257" style={{ minHeight: '90px', width: '100%', display: 'flex', justifyContent: 'center', background: 'rgba(0,0,0,0.2)' }}></div>
+    </motion.div>
+  );
+};
+
+
 export default function Dashboard() {
   const { user } = useAuth();
   const { balance, lifetimeEarnings, lastCheckInDate, addEarnings, claimDailyCheckIn, dailyProgress, setShowGlobalAd, incrementTaskProgress } = useWallet();
@@ -297,6 +321,9 @@ export default function Dashboard() {
           </div>
           <div className="stat-icon-wrapper" style={{ color: "var(--color-success)" }}>💸</div>
         </motion.div>
+
+        {/* Passive Ad Injection (Below Balance) */}
+        <AdsterraDashboardBanner />
 
         <motion.div whileHover={{ scale: 1.02 }} className="glass-card stat-card" style={{ gridColumn: "1 / -1" }}>
           <div className="stat-info">

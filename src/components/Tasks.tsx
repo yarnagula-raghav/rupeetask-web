@@ -195,53 +195,43 @@ function AdsTask() {
 // ================= 2. Surveys =================
 function SurveysTask() {
   const { user } = useAuth();
-  const { addEarnings, incrementTaskProgress, dailyProgress } = useWallet();
-  const [loading, setLoading] = useState(false);
-  const maxQuota = 3;
-  const isDone = dailyProgress.surveys >= maxQuota;
-
-  const handleSurvey = () => {
-    if (!user) return;
-    
-    // Open the real CPX Research Offerwall in a new tab
-    const cpxUrl = `https://offers.cpx-research.com/index.php?app_id=33407&ext_user_id=${user.uid}`;
-    window.open(cpxUrl, '_blank');
-    
-    // For now, we simulate completion after 5 seconds until the backend webhook is built
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-      addEarnings(2.50);
-      incrementTaskProgress("surveys");
-      triggerSuccess();
-    }, 5000);
-  };
+  
+  const providers = [
+    { name: "CPX Research", color: "#3b82f6", payout: "₹15-40 / survey", status: "Active" },
+    { name: "Pollfish", color: "#10b981", payout: "₹10-25 / survey", status: "Pending API" },
+    { name: "Bitlabs", color: "#f59e0b", payout: "₹15-35 / survey", status: "Pending API" },
+    { name: "Theorem Reach", color: "#8b5cf6", payout: "₹10-30 / survey", status: "Pending API" },
+  ];
 
   return (
     <div className="tab-content active">
-      <div className="task-panel">
-        <div className="task-instructions-card">
-          <h3 style={{ fontWeight: 700, fontSize: "1.15rem", marginBottom: "12px" }}>
-            📋 Fill Surveys (CPX Research)
-          </h3>
-          <p style={{ fontSize: "0.88rem", color: "var(--color-text-secondary)", lineHeight: 1.5 }}>
-            Answer simple market research questions.
-          </p>
-          <div style={{ marginTop: '12px', padding: '8px', background: 'rgba(0,0,0,0.2)', borderRadius: '8px' }}>
-            <strong>Progress:</strong> {dailyProgress.surveys} / {maxQuota}
-          </div>
-        </div>
-
-        <div className="task-execute-box">
-          {isDone && (
-            <div style={{ color: 'var(--color-success)', fontWeight: 'bold', fontSize: '1.1rem', textAlign: 'center', marginBottom: '16px' }}>
-              ✅ Daily Quota Completed! Keep earning!
+      <div className="task-panel" style={{ background: "transparent", border: "none", padding: 0 }}>
+        
+        {providers.map((p, i) => (
+          <div key={i} className="glass-card" style={{ marginBottom: "16px", padding: "16px", display: "flex", flexWrap: "wrap", justifyContent: "space-between", alignItems: "center", borderLeft: `4px solid ${p.color}` }}>
+            <div>
+              <h3 style={{ fontWeight: 700, fontSize: "1.1rem", marginBottom: "4px" }}>📋 {p.name}</h3>
+              <p style={{ fontSize: "0.85rem", color: "var(--color-text-secondary)" }}>Earn {p.payout}</p>
             </div>
-          )}
-          <button className="btn-primary" onClick={handleSurvey} disabled={loading}>
-            {loading ? "Loading..." : "📋 Open Surveys"}
-          </button>
-        </div>
+            <button 
+              className="btn-primary" 
+              style={{ background: p.status === "Active" ? p.color : "rgba(255,255,255,0.1)", color: p.status === "Active" ? "white" : "var(--color-text-secondary)" }}
+              onClick={() => {
+                if (p.status === "Active" && user) {
+                  window.open(`https://offers.cpx-research.com/index.php?app_id=33407&ext_user_id=${user.uid}`, '_blank');
+                } else {
+                  alert(`${p.name} is awaiting API Approval!`);
+                }
+              }}
+            >
+              {p.status === "Active" ? "Open Wall" : "Pending Approval"}
+            </button>
+          </div>
+        ))}
+        
+        {/* Passive AdBlock between tasks */}
+        <AdsterraBanner />
+        
       </div>
     </div>
   );
@@ -249,46 +239,36 @@ function SurveysTask() {
 
 // ================= 3. App Installs =================
 function AppInstallsTask() {
-  const { addEarnings, incrementTaskProgress, dailyProgress } = useWallet();
-  const [loading, setLoading] = useState(false);
-  const maxQuota = 1;
-  const isDone = dailyProgress.appInstalls >= maxQuota;
-
-  const handleInstall = () => {
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-      addEarnings(10.0);
-      incrementTaskProgress("appInstalls");
-      triggerSuccess();
-    }, 3000);
-  };
+  const providers = [
+    { name: "OGAds Offerwall", color: "#ef4444", payout: "₹25-50 / install", status: "Pending API" },
+    { name: "AdGate Media", color: "#3b82f6", payout: "₹20-40 / install", status: "Pending API" },
+    { name: "Lootably", color: "#10b981", payout: "₹15-30 / install", status: "Pending API" },
+    { name: "AdScend Media", color: "#f59e0b", payout: "₹10-25 / install", status: "Pending API" },
+  ];
 
   return (
     <div className="tab-content active">
-      <div className="task-panel">
-        <div className="task-instructions-card">
-          <h3 style={{ fontWeight: 700, fontSize: "1.15rem", marginBottom: "12px" }}>
-            📱 App Installs (OGAds)
-          </h3>
-          <p style={{ fontSize: "0.88rem", color: "var(--color-text-secondary)", lineHeight: 1.5 }}>
-            Install and register on our partner applications.
-          </p>
-          <div style={{ marginTop: '12px', padding: '8px', background: 'rgba(0,0,0,0.2)', borderRadius: '8px' }}>
-            <strong>Progress:</strong> {dailyProgress.appInstalls} / {maxQuota}
-          </div>
-        </div>
-
-        <div className="task-execute-box">
-          {isDone && (
-            <div style={{ color: 'var(--color-success)', fontWeight: 'bold', fontSize: '1.1rem', textAlign: 'center', marginBottom: '16px' }}>
-              ✅ Daily Quota Completed! Keep earning!
+      <div className="task-panel" style={{ background: "transparent", border: "none", padding: 0 }}>
+        
+        {providers.map((p, i) => (
+          <div key={i} className="glass-card" style={{ marginBottom: "16px", padding: "16px", display: "flex", flexWrap: "wrap", justifyContent: "space-between", alignItems: "center", borderLeft: `4px solid ${p.color}` }}>
+            <div>
+              <h3 style={{ fontWeight: 700, fontSize: "1.1rem", marginBottom: "4px" }}>📱 {p.name}</h3>
+              <p style={{ fontSize: "0.85rem", color: "var(--color-text-secondary)" }}>Earn {p.payout}</p>
             </div>
-          )}
-          <button className="btn-primary" onClick={handleInstall} disabled={loading}>
-            {loading ? "Verifying Install..." : "📲 Install App"}
-          </button>
-        </div>
+            <button 
+              className="btn-primary" 
+              style={{ background: "rgba(255,255,255,0.1)", color: "var(--color-text-secondary)" }}
+              onClick={() => alert(`${p.name} is awaiting API Approval!`)}
+            >
+              Pending Approval
+            </button>
+          </div>
+        ))}
+        
+        {/* Passive AdBlock between tasks */}
+        <AdsterraBanner />
+        
       </div>
     </div>
   );

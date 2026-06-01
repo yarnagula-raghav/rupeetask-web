@@ -2,6 +2,28 @@ import React, { useState, useEffect } from "react";
 import { useWallet } from "@/context/WalletContext";
 import { motion } from "framer-motion";
 import { Haptics, ImpactStyle } from "@capacitor/haptics";
+import { Haptics, ImpactStyle } from "@capacitor/haptics";
+
+const AdsterraWalletBanner = () => {
+  useEffect(() => {
+    if (!document.getElementById("adsterra-script-wallet-dae73bfcfc3c34cf577e22bcae422257")) {
+      const script = document.createElement("script");
+      script.id = "adsterra-script-wallet-dae73bfcfc3c34cf577e22bcae422257";
+      script.type = "text/javascript";
+      script.dataset.cfasync = "false";
+      script.src = "//pl25602351.effectivecpmnetwork.com/dae73bfcfc3c34cf577e22bcae422257/invoke.js";
+      script.async = true;
+      document.head.appendChild(script);
+    }
+  }, []);
+
+  return (
+    <div style={{ marginTop: '24px', marginBottom: '16px', background: 'rgba(0,0,0,0.2)', borderRadius: '8px', padding: '12px', border: '1px solid var(--border-color)', textAlign: 'center' }}>
+      <h4 style={{ fontSize: '0.9rem', color: 'var(--color-text-secondary)', marginBottom: '8px' }}>Want to withdraw faster? Complete more tasks!</h4>
+      <div id="container-dae73bfcfc3c34cf577e22bcae422257" style={{ minHeight: '60px', width: '100%', display: 'flex', justifyContent: 'center' }}></div>
+    </div>
+  );
+};
 
 function CountdownTimer() {
   const [timeLeft, setTimeLeft] = useState("");
@@ -244,6 +266,8 @@ export default function Wallet() {
               />
             )}
           </div>
+
+          <AdsterraWalletBanner />
 
           <button className="btn-primary" style={{ width: "100%", padding: "16px", fontSize: "1.1rem" }} onClick={handleWithdraw} disabled={isSubmitting}>
             {isSubmitting ? "Processing..." : "Withdraw ₹1,000"}
