@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import * as admin from "firebase-admin";
 
+export const dynamic = 'force-dynamic';
+
 // Initialize Firebase Admin if it hasn't been already
 if (!admin.apps.length) {
   try {

@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useWallet } from "@/context/WalletContext";
 import { useAuth } from "@/context/AuthContext";
-import { db } from "@/firebase";
+import { db } from "@/lib/firebase";
 import { collection, query, onSnapshot, doc, updateDoc, runTransaction } from "firebase/firestore";
 
 export default function AdminLedger() {
