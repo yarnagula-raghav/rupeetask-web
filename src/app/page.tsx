@@ -15,6 +15,37 @@ import Profile from "@/components/Profile";
 import Streak from "@/components/Streak";
 import Tutorial from "@/components/Tutorial";
 import GlobalAdOverlay from "@/components/GlobalAdOverlay";
+import { useEffect } from "react";
+
+const AdsterraGlobalBannerTop = () => {
+  useEffect(() => {
+    if (!document.getElementById("adsterra-script-top-dae73bfcfc3c34cf577e22bcae422257")) {
+      const script = document.createElement("script");
+      script.id = "adsterra-script-top-dae73bfcfc3c34cf577e22bcae422257";
+      script.type = "text/javascript";
+      script.dataset.cfasync = "false";
+      script.src = "//pl25602351.effectivecpmnetwork.com/dae73bfcfc3c34cf577e22bcae422257/invoke.js";
+      script.async = true;
+      document.head.appendChild(script);
+    }
+  }, []);
+  return <div id="container-dae73bfcfc3c34cf577e22bcae422257" style={{ minHeight: '60px', width: '100%', display: 'flex', justifyContent: 'center', background: 'rgba(0,0,0,0.3)', borderBottom: '1px solid var(--border-color)', padding: '8px 0' }}></div>;
+};
+
+const AdsterraGlobalBannerBottom = () => {
+  useEffect(() => {
+    if (!document.getElementById("adsterra-script-bottom-dae73bfcfc3c34cf577e22bcae422257")) {
+      const script = document.createElement("script");
+      script.id = "adsterra-script-bottom-dae73bfcfc3c34cf577e22bcae422257";
+      script.type = "text/javascript";
+      script.dataset.cfasync = "false";
+      script.src = "//pl25602351.effectivecpmnetwork.com/dae73bfcfc3c34cf577e22bcae422257/invoke.js";
+      script.async = true;
+      document.head.appendChild(script);
+    }
+  }, []);
+  return <div id="container-dae73bfcfc3c34cf577e22bcae422257" style={{ minHeight: '60px', width: '100%', display: 'flex', justifyContent: 'center', background: 'rgba(0,0,0,0.3)', borderTop: '1px solid var(--border-color)', padding: '8px 0', marginTop: 'auto' }}></div>;
+};
 
 const TAB_INFO: Record<string, { title: string; subtitle: string }> = {
   dashboard: { title: "Overview Dashboard", subtitle: "Track your legal earnings, streaks, and withdrawal thresholds." },
@@ -48,18 +79,24 @@ export default function Home() {
         />
       </div>
 
-      <main className="main-content">
+      <main className="main-content" style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
         <Header title={tabInfo.title} subtitle={tabInfo.subtitle} />
 
-        <AnimatePresence mode="wait">
-          {activeTab === "dashboard" && <Dashboard key="dashboard" />}
-          {activeTab === "streak" && <Streak key="streak" />}
-          {activeTab === "tasks" && <Tasks key="tasks" />}
-          {activeTab === "wallet" && <Wallet key="wallet" />}
-          {activeTab === "leaderboard" && <Leaderboard key="leaderboard" />}
-          {activeTab === "referral" && <Referral key="referral" />}
-          {activeTab === "profile" && <Profile key="profile" />}
-        </AnimatePresence>
+        <AdsterraGlobalBannerTop />
+
+        <div style={{ flex: 1 }}>
+          <AnimatePresence mode="wait">
+            {activeTab === "dashboard" && <Dashboard key="dashboard" />}
+            {activeTab === "streak" && <Streak key="streak" />}
+            {activeTab === "tasks" && <Tasks key="tasks" />}
+            {activeTab === "wallet" && <Wallet key="wallet" />}
+            {activeTab === "leaderboard" && <Leaderboard key="leaderboard" />}
+            {activeTab === "referral" && <Referral key="referral" />}
+            {activeTab === "profile" && <Profile key="profile" />}
+          </AnimatePresence>
+        </div>
+
+        <AdsterraGlobalBannerBottom />
       </main>
 
       {/* Mobile Bottom Nav */}
