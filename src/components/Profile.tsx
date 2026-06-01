@@ -111,7 +111,7 @@ export default function Profile() {
             <span className="action-icon">💳</span> Payment Methods
           </motion.button>
           <motion.button whileHover={{ scale: 1.02 }} className="profile-action-btn" onClick={() => setShowPrivacy(true)}>
-            <span className="action-icon">🛡️</span> Privacy & Security
+            <span className="action-icon">🛡️</span> Legal & Security
           </motion.button>
           <motion.button whileHover={{ scale: 1.02 }} className="profile-action-btn danger" onClick={handleLogout}>
             <span className="action-icon">🚪</span> Log Out
@@ -190,11 +190,31 @@ export default function Profile() {
         )}
 
         {showPrivacy && (
-          <Modal onClose={() => setShowPrivacy(false)} title="🛡️ Privacy & Security">
-            <p style={{ fontSize: "0.9rem", color: "var(--color-text-secondary)", marginBottom: "16px" }}>
-              Your data is encrypted and securely stored. We never share your payment details with third parties.
+          <Modal onClose={() => setShowPrivacy(false)} title="🛡️ Legal & Security">
+            <p style={{ fontSize: "0.85rem", color: "var(--color-text-secondary)", marginBottom: "16px" }}>
+              Review our policies to ensure compliance. We strictly prohibit VPNs and multiple accounts.
             </p>
-            <button className="btn-primary" style={{ width: "100%", background: "var(--color-danger)" }} onClick={() => alert("Contact support to delete account.")}>
+            
+            <div style={{ display: "flex", flexDirection: "column", gap: "10px", marginBottom: "20px" }}>
+              <button className="btn-primary outline" style={{ width: "100%", textAlign: "left", padding: "12px", display: "flex", justifyContent: "space-between" }} onClick={() => window.location.href = "/fraud-policy"}>
+                <span>🚨 Fraud & Zero-Tolerance Policy</span>
+                <span>→</span>
+              </button>
+              <button className="btn-primary outline" style={{ width: "100%", textAlign: "left", padding: "12px", display: "flex", justifyContent: "space-between" }} onClick={() => window.location.href = "/terms"}>
+                <span>📜 Terms of Service</span>
+                <span>→</span>
+              </button>
+              <button className="btn-primary outline" style={{ width: "100%", textAlign: "left", padding: "12px", display: "flex", justifyContent: "space-between" }} onClick={() => window.location.href = "/privacy"}>
+                <span>🔒 Privacy Policy</span>
+                <span>→</span>
+              </button>
+              <button className="btn-primary outline" style={{ width: "100%", textAlign: "left", padding: "12px", display: "flex", justifyContent: "space-between" }} onClick={() => window.location.href = "/faq"}>
+                <span>❓ Frequently Asked Questions</span>
+                <span>→</span>
+              </button>
+            </div>
+
+            <button className="btn-primary" style={{ width: "100%", background: "var(--color-danger)" }} onClick={() => alert("Contact ruppetask2025@gmail.com to request account deletion.")}>
               Request Account Deletion
             </button>
           </Modal>
