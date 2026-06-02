@@ -50,6 +50,30 @@ export default function PrivacyPolicy() {
         We retain your personal data only for as long as is necessary for the purposes set out in this policy. You have the right to request the deletion of your account and associated data at any time by contacting our support team. Upon deletion, all unwithdrawn balances will be forfeited.
       </p>
 
+      <h2 style={{ marginTop: "40px", marginBottom: "15px", fontSize: "1.4rem", color: "var(--color-brand)" }}>6. Your Data Protection Rights (GDPR & CCPA)</h2>
+      <p style={{ marginBottom: "15px", lineHeight: "1.6" }}>
+        Depending on your location, such as if you are a resident of the European Economic Area (EEA) under the General Data Protection Regulation (GDPR) or California under the California Consumer Privacy Act (CCPA), you have certain data protection rights:
+        <ul style={{ marginLeft: "20px", marginTop: "10px" }}>
+          <li style={{ marginBottom: "8px" }}><strong>The right to access, update, or delete:</strong> You have the right to request access to the information we have on you, or request that it be updated or deleted.</li>
+          <li style={{ marginBottom: "8px" }}><strong>The right of rectification:</strong> You have the right to have your information rectified if it is inaccurate or incomplete.</li>
+          <li style={{ marginBottom: "8px" }}><strong>The right to object and restrict:</strong> You have the right to object to our processing of your personal data or request that we restrict it.</li>
+          <li style={{ marginBottom: "8px" }}><strong>The right to data portability:</strong> You have the right to be provided with a copy of your personal data in a structured, machine-readable format.</li>
+          <li style={{ marginBottom: "8px" }}><strong>The right to opt-out (CCPA):</strong> California residents have the right to opt-out of the "sale" of their personal information. We do not sell your personal data to third parties for monetary value.</li>
+          <li style={{ marginBottom: "8px" }}><strong>The right to non-discrimination:</strong> You have the right not to receive discriminatory treatment for exercising your privacy rights.</li>
+        </ul>
+      </p>
+
+      <h2 style={{ marginTop: "40px", marginBottom: "15px", fontSize: "1.4rem", color: "var(--color-brand)" }}>7. Contact Us & Exercising Your Rights</h2>
+      <p style={{ marginBottom: "15px", lineHeight: "1.6" }}>
+        To exercise any of the rights mentioned above, or if you have any questions or concerns regarding this Privacy Policy or our data practices, please contact our Data Protection Officer / Privacy Team at:
+      </p>
+      <p style={{ marginBottom: "15px", lineHeight: "1.6", fontWeight: "bold" }}>
+        Email: ruppetask2025@gmail.com
+      </p>
+      <p style={{ marginBottom: "15px", lineHeight: "1.6" }}>
+        We will respond to your request within the timeframes required by applicable laws (typically within 30-45 days).
+      </p>
+
       <div style={{ marginTop: "50px", borderTop: "1px solid var(--border-light)", paddingTop: "20px" }}>
         <a href="/" style={{ color: "var(--color-brand)", textDecoration: "none", fontWeight: 600 }}>&larr; Return to Application</a>
       </div>
