@@ -14,7 +14,7 @@ import Referral from "@/components/Referral";
 import Profile from "@/components/Profile";
 import Streak from "@/components/Streak";
 import Tutorial from "@/components/Tutorial";
-import GlobalAdOverlay from "@/components/GlobalAdOverlay";
+
 import { useEffect } from "react";
 
 const AdsterraGlobalBannerTop = () => {
@@ -52,7 +52,7 @@ export default function Home() {
   return (
     <>
       <AuthOverlay />
-      <GlobalAdOverlay />
+
       <Tutorial />
 
       {/* Desktop Sidebar (hidden on mobile via CSS) */}
