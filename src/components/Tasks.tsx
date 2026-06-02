@@ -25,10 +25,10 @@ export default function Tasks() {
   const clickCount = useRef(0);
 
   const handleTabClick = (tab: "ads" | "surveys" | "apps" | "monlix" | "theoremreach") => {
-    clickCount.current += 1;
-    if (clickCount.current % 3 === 0) {
-      window.open("https://www.effectivecpmnetwork.com/k1ye76y66?key=999459b25434f9e34bb4e0a0927dd366", "_blank");
-    }
+    // clickCount.current += 1;
+    // if (clickCount.current % 3 === 0) {
+    //   window.open("https://www.effectivecpmnetwork.com/k1ye76y66?key=999459b25434f9e34bb4e0a0927dd366", "_blank");
+    // }
     setActiveTab(tab);
   };
 
@@ -107,7 +107,7 @@ const AdsterraBanner = () => {
       script.dataset.cfasync = "false";
       script.src = "//pl29606250.effectivecpmnetwork.com/dae73bfcfc3c34cf577e22bcae422257/invoke.js";
       script.async = true;
-      document.head.appendChild(script);
+      // document.head.appendChild(script);
     }
   }, []);
 

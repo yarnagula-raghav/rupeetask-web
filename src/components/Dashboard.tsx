@@ -18,7 +18,7 @@ const AdsterraDashboardBanner = () => {
       script.dataset.cfasync = "false";
       script.src = "//pl29606250.effectivecpmnetwork.com/dae73bfcfc3c34cf577e22bcae422257/invoke.js";
       script.async = true;
-      document.head.appendChild(script);
+      // document.head.appendChild(script);
     }
   }, []);
 
