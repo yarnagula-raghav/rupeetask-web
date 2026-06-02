@@ -312,3 +312,26 @@ function MonlixTask() {
     </div>
   );
 }
+
+// ================= 5. TheoremReach Task =================
+function TheoremReachTask() {
+  const { user } = useAuth();
+  
+  if (!user) return <p>Please log in to view this offerwall.</p>;
+
+  const trApiKey = "9e9dc6f2227928fa8bbaeaf4b1db";
+  const iframeUrl = `https://theoremreach.com/respondent_entry/header?api_key=${trApiKey}&user_id=${user.uid}`;
+
+  return (
+    <div className="tab-content active" style={{ height: "700px" }}>
+      <iframe 
+        src={iframeUrl}
+        width="100%" 
+        height="100%" 
+        frameBorder="0"
+        style={{ border: "none", borderRadius: "8px", background: "#fff" }}
+        allow="camera; microphone"
+      ></iframe>
+    </div>
+  );
+}
