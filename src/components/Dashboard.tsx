@@ -16,7 +16,7 @@ const AdsterraDashboardBanner = () => {
       script.id = "adsterra-script-dashboard-dae73bfcfc3c34cf577e22bcae422257";
       script.type = "text/javascript";
       script.dataset.cfasync = "false";
-      script.src = "//pl25602351.effectivecpmnetwork.com/dae73bfcfc3c34cf577e22bcae422257/invoke.js";
+      script.src = "//pl29606250.effectivecpmnetwork.com/dae73bfcfc3c34cf577e22bcae422257/invoke.js";
       script.async = true;
       document.head.appendChild(script);
     }
