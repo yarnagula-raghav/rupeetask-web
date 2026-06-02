@@ -22,6 +22,15 @@ const triggerSuccess = async () => {
 export default function Tasks() {
   const [activeTab, setActiveTab] = useState<"ads" | "surveys" | "apps" | "monlix" | "theoremreach">("ads");
   const { dailyProgress } = useWallet();
+  const clickCount = useRef(0);
+
+  const handleTabClick = (tab: "ads" | "surveys" | "apps" | "monlix" | "theoremreach") => {
+    clickCount.current += 1;
+    if (clickCount.current % 3 === 0) {
+      window.open("https://www.effectivecpmnetwork.com/k1ye76y66?key=999459b25434f9e34bb4e0a0927dd366", "_blank");
+    }
+    setActiveTab(tab);
+  };
 
   return (
     <motion.section 
@@ -38,21 +47,21 @@ export default function Tasks() {
         <div className="tabs-navigation" style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', paddingBottom: '8px' }}>
           <button
             className={`tab-btn ${activeTab === "ads" ? "active" : ""}`}
-            onClick={() => setActiveTab("ads")}
+            onClick={() => handleTabClick("ads")}
             style={{ flexShrink: 0 }}
           >
             📺 Ads ({dailyProgress.videoAds}/10)
           </button>
           <button
             className={`tab-btn ${activeTab === "surveys" ? "active" : ""}`}
-            onClick={() => setActiveTab("surveys")}
+            onClick={() => handleTabClick("surveys")}
             style={{ flexShrink: 0 }}
           >
             📋 Surveys ({dailyProgress.surveys}/3)
           </button>
           <button
             className={`tab-btn ${activeTab === "apps" ? "active" : ""}`}
-            onClick={() => setActiveTab("apps")}
+            onClick={() => handleTabClick("apps")}
             style={{ flexShrink: 0 }}
           >
             📱 Installs ({dailyProgress.appInstalls}/1)
@@ -61,14 +70,14 @@ export default function Tasks() {
 
           <button
             className={`tab-btn ${activeTab === "monlix" ? "active" : ""}`}
-            onClick={() => setActiveTab("monlix")}
+            onClick={() => handleTabClick("monlix")}
             style={{ flexShrink: 0, border: "1px solid #10b981", color: "#10b981" }}
           >
             🤑 Monlix
           </button>
           <button
             className={`tab-btn ${activeTab === "theoremreach" ? "active" : ""}`}
-            onClick={() => setActiveTab("theoremreach")}
+            onClick={() => handleTabClick("theoremreach")}
             style={{ flexShrink: 0, border: "1px solid #a855f7", color: "#a855f7" }}
           >
             📊 TheoremReach
