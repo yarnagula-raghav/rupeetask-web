@@ -23,6 +23,8 @@ interface WalletContextType {
   lastCheckInDate: string | null;
   dailyProgress: DailyProgress;
   streakCount: number;
+  referralsCount: number;
+  referralsEarned: number;
   incrementTaskProgress: (taskType: keyof Omit<DailyProgress, 'date'>) => Promise<void>;
   registerGlobalClick: () => void;
   showGlobalAd: boolean;
@@ -49,6 +51,8 @@ export const WalletProvider = ({ children }: { children: React.ReactNode }) => {
   
   const [dailyProgress, setDailyProgress] = useState<DailyProgress>(defaultProgress);
   const [streakCount, setStreakCount] = useState<number>(0);
+  const [referralsCount, setReferralsCount] = useState<number>(0);
+  const [referralsEarned, setReferralsEarned] = useState<number>(0);
   
   // Global Ad State
   const [globalClickCount, setGlobalClickCount] = useState(0);
@@ -105,6 +109,14 @@ export const WalletProvider = ({ children }: { children: React.ReactNode }) => {
 
         if (data.streakCount !== undefined) {
           setStreakCount(data.streakCount);
+        }
+
+        if (data.referralsCount !== undefined) {
+          setReferralsCount(data.referralsCount);
+        }
+
+        if (data.referralsEarned !== undefined) {
+          setReferralsEarned(data.referralsEarned);
         }
 
         if (data.dailyProgress) {
@@ -324,6 +336,8 @@ export const WalletProvider = ({ children }: { children: React.ReactNode }) => {
         lastCheckInDate,
         dailyProgress,
         streakCount,
+        referralsCount,
+        referralsEarned,
         incrementTaskProgress,
         registerGlobalClick,
         showGlobalAd,

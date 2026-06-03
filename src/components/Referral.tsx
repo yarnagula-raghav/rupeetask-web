@@ -2,10 +2,12 @@
 
 import React, { useState } from "react";
 import { useAuth } from "@/context/AuthContext";
+import { useWallet } from "@/context/WalletContext";
 import { motion } from "framer-motion";
 
 export default function Referral() {
   const { user } = useAuth();
+  const { referralsCount, referralsEarned } = useWallet();
   const [copied, setCopied] = useState(false);
   const referralCode = user ? `RT-${user.uid.substring(0, 8).toUpperCase()}` : "RT-LOADING";
 
@@ -45,15 +47,15 @@ export default function Referral() {
 
         <div className="referral-stats">
           <div className="referral-stat">
-            <div className="ref-num">0</div>
+            <div className="ref-num">{referralsCount}</div>
             <div className="ref-lbl">Friends Invited</div>
           </div>
           <div className="referral-stat">
-            <div className="ref-num">0</div>
+            <div className="ref-num">{referralsCount}</div>
             <div className="ref-lbl">Active Earners</div>
           </div>
           <div className="referral-stat">
-            <div className="ref-num">₹0</div>
+            <div className="ref-num">₹{referralsEarned.toFixed(2)}</div>
             <div className="ref-lbl">Bonus Earned</div>
           </div>
         </div>
