@@ -9,25 +9,30 @@ import { Haptics, ImpactStyle } from "@capacitor/haptics";
 
 const SPIN_PRIZES = ["₹1", "₹2", "₹5", "₹3", "₹10", "₹1", "₹2", "₹5"];
 
-const AdsterraDashboardBanner = () => {
+const AdSenseDashboardBanner = () => {
   React.useEffect(() => {
-    if (!document.getElementById("adsterra-script-dashboard-76664a52f883381fb41cc64b7769cd22")) {
-      const script = document.createElement("script");
-      script.id = "adsterra-script-dashboard-76664a52f883381fb41cc64b7769cd22";
-      script.type = "text/javascript";
-      script.dataset.cfasync = "false";
-      script.src = "//pl29627501.effectivecpmnetwork.com/76664a52f883381fb41cc64b7769cd22/invoke.js";
-      script.async = true;
-      document.head.appendChild(script);
+    try {
+      if (typeof window !== "undefined") {
+        ((window as any).adsbygoogle = (window as any).adsbygoogle || []).push({});
+      }
+    } catch (e) {
+      console.error("AdSense error", e);
     }
   }, []);
 
   return (
     <motion.div whileHover={{ scale: 1.02 }} className="glass-card stat-card" style={{ gridColumn: "1 / -1", padding: '0', overflow: 'hidden' }}>
       <div style={{ padding: '16px', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
-        <span className="stat-label" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>✨ Recommended Sponsor</span>
+        <span className="stat-label" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>✨ Premium Sponsor</span>
       </div>
-      <div id="container-76664a52f883381fb41cc64b7769cd22" style={{ minHeight: '90px', width: '100%', display: 'flex', justifyContent: 'center', background: 'rgba(0,0,0,0.2)' }}></div>
+      <div style={{ minHeight: '100px', width: '100%', display: 'flex', justifyContent: 'center', background: 'rgba(0,0,0,0.2)' }}>
+        <ins className="adsbygoogle"
+             style={{ display: "block", width: "100%" }}
+             data-ad-client="ca-pub-2054262696231339"
+             data-ad-slot="9269984965"
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+      </div>
     </motion.div>
   );
 };
@@ -323,7 +328,7 @@ export default function Dashboard() {
         </motion.div>
 
         {/* Passive Ad Injection (Below Balance) */}
-        <AdsterraDashboardBanner />
+        <AdSenseDashboardBanner />
 
         <motion.div whileHover={{ scale: 1.02 }} className="glass-card stat-card" style={{ gridColumn: "1 / -1" }}>
           <div className="stat-info">
