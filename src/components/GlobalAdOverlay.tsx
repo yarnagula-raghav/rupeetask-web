@@ -7,18 +7,18 @@ import { X, PlayCircle, ExternalLink } from "lucide-react";
 
 const AdsterraGlobalBanner = () => {
   useEffect(() => {
-    if (!document.getElementById("adsterra-script-global-dae73bfcfc3c34cf577e22bcae422257")) {
+    if (!document.getElementById("adsterra-script-global-76664a52f883381fb41cc64b7769cd22")) {
       const script = document.createElement("script");
-      script.id = "adsterra-script-global-dae73bfcfc3c34cf577e22bcae422257";
+      script.id = "adsterra-script-global-76664a52f883381fb41cc64b7769cd22";
       script.type = "text/javascript";
       script.dataset.cfasync = "false";
-      script.src = "//pl25602351.effectivecpmnetwork.com/dae73bfcfc3c34cf577e22bcae422257/invoke.js";
+      script.src = "//pl29627501.effectivecpmnetwork.com/76664a52f883381fb41cc64b7769cd22/invoke.js";
       script.async = true;
       document.head.appendChild(script);
     }
   }, []);
 
-  return <div id="container-dae73bfcfc3c34cf577e22bcae422257" style={{ minHeight: '60px', width: '100%', display: 'flex', justifyContent: 'center', background: 'rgba(255,255,255,0.05)', borderRadius: '8px', overflow: 'hidden' }}></div>;
+  return <div id="container-76664a52f883381fb41cc64b7769cd22" style={{ minHeight: '60px', width: '100%', display: 'flex', justifyContent: 'center', background: 'rgba(255,255,255,0.05)', borderRadius: '8px', overflow: 'hidden' }}></div>;
 };
 
 export default function GlobalAdOverlay() {

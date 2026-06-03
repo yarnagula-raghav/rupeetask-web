@@ -27,7 +27,7 @@ export default function Tasks() {
   const handleTabClick = (tab: "ads" | "surveys" | "apps" | "monlix" | "theoremreach") => {
     clickCount.current += 1;
     if (clickCount.current % 3 === 0) {
-      window.open("https://www.effectivecpmnetwork.com/k1ye76y66?key=999459b25434f9e34bb4e0a0927dd366", "_blank");
+      window.open("https://www.effectivecpmnetwork.com/r2uywycqs?key=6c79331ac5e2c6595ba496c1fb5707a5", "_blank");
     }
     setActiveTab(tab);
   };
@@ -100,18 +100,18 @@ export default function Tasks() {
 // ================= Adsterra Component =================
 const AdsterraBanner = () => {
   React.useEffect(() => {
-    if (!document.getElementById("adsterra-script-dae73bfcfc3c34cf577e22bcae422257")) {
+    if (!document.getElementById("adsterra-script-76664a52f883381fb41cc64b7769cd22")) {
       const script = document.createElement("script");
-      script.id = "adsterra-script-dae73bfcfc3c34cf577e22bcae422257";
+      script.id = "adsterra-script-76664a52f883381fb41cc64b7769cd22";
       script.type = "text/javascript";
       script.dataset.cfasync = "false";
-      script.src = "//pl29606250.effectivecpmnetwork.com/dae73bfcfc3c34cf577e22bcae422257/invoke.js";
+      script.src = "//pl29627501.effectivecpmnetwork.com/76664a52f883381fb41cc64b7769cd22/invoke.js";
       script.async = true;
       document.head.appendChild(script);
     }
   }, []);
 
-  return <div id="container-dae73bfcfc3c34cf577e22bcae422257" style={{ minHeight: '60px', width: '100%', display: 'flex', justifyContent: 'center', margin: '16px 0', background: 'rgba(0,0,0,0.1)', borderRadius: '8px', overflow: 'hidden' }}></div>;
+  return <div id="container-76664a52f883381fb41cc64b7769cd22" style={{ minHeight: '60px', width: '100%', display: 'flex', justifyContent: 'center', margin: '16px 0', background: 'rgba(0,0,0,0.1)', borderRadius: '8px', overflow: 'hidden' }}></div>;
 };
 
 // ================= 1. Video Ads =================

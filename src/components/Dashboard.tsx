@@ -11,12 +11,12 @@ const SPIN_PRIZES = ["₹1", "₹2", "₹5", "₹3", "₹10", "₹1", "₹2", "�
 
 const AdsterraDashboardBanner = () => {
   React.useEffect(() => {
-    if (!document.getElementById("adsterra-script-dashboard-dae73bfcfc3c34cf577e22bcae422257")) {
+    if (!document.getElementById("adsterra-script-dashboard-76664a52f883381fb41cc64b7769cd22")) {
       const script = document.createElement("script");
-      script.id = "adsterra-script-dashboard-dae73bfcfc3c34cf577e22bcae422257";
+      script.id = "adsterra-script-dashboard-76664a52f883381fb41cc64b7769cd22";
       script.type = "text/javascript";
       script.dataset.cfasync = "false";
-      script.src = "//pl29606250.effectivecpmnetwork.com/dae73bfcfc3c34cf577e22bcae422257/invoke.js";
+      script.src = "//pl29627501.effectivecpmnetwork.com/76664a52f883381fb41cc64b7769cd22/invoke.js";
       script.async = true;
       document.head.appendChild(script);
     }
@@ -27,7 +27,7 @@ const AdsterraDashboardBanner = () => {
       <div style={{ padding: '16px', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
         <span className="stat-label" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>✨ Recommended Sponsor</span>
       </div>
-      <div id="container-dae73bfcfc3c34cf577e22bcae422257" style={{ minHeight: '90px', width: '100%', display: 'flex', justifyContent: 'center', background: 'rgba(0,0,0,0.2)' }}></div>
+      <div id="container-76664a52f883381fb41cc64b7769cd22" style={{ minHeight: '90px', width: '100%', display: 'flex', justifyContent: 'center', background: 'rgba(0,0,0,0.2)' }}></div>
     </motion.div>
   );
 };
