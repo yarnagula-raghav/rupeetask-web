@@ -29,6 +29,7 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2054262696231339" crossOrigin="anonymous"></script>
+        <script type='text/javascript' src='https://pl29637502.effectivecpmnetwork.com/46/dd/e7/46dde7eb18697d6a9b45f93d7e73407f.js'></script>
       </head>
       <body className={`${inter.variable} ${outfit.variable} dark-mode`}>
         <AuthProvider>
