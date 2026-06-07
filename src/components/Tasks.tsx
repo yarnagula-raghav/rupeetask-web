@@ -355,28 +355,23 @@ function TheoremReachTask() {
 
 // ================= 7. AdGem Task =================
 function AdGemTask() {
-  return (
-    <div className="tab-content active">
-      <div className="task-panel">
-        <div className="task-instructions-card">
-          <h3 style={{ fontWeight: 700, fontSize: "1.15rem", marginBottom: "12px", color: "#6366f1" }}>
-            💎 AdGem Offerwall
-          </h3>
-          <p style={{ fontSize: "0.88rem", color: "var(--color-text-secondary)", lineHeight: 1.5 }}>
-            Complete top mobile app installs, quick tasks, and high-paying surveys!
-          </p>
-        </div>
+  const { user } = useAuth();
+  
+  if (!user) return <p>Please log in to view this offerwall.</p>;
 
-        <div className="task-execute-box">
-          <button 
-            className="btn-primary"
-            style={{ background: "linear-gradient(90deg, #6366f1 0%, #4f46e5 100%)" }}
-            onClick={() => alert("AdGem is currently pending network approval. Once your account is fully approved, this button will go live automatically!")}
-          >
-            💎 Open AdGem (Pending Approval)
-          </button>
-        </div>
-      </div>
+  // Your AdGem App ID is 32766
+  const iframeUrl = `https://adunits.adgem.com/wall?appid=32766&playerid=${user.uid}`;
+
+  return (
+    <div className="tab-content active" style={{ height: "700px" }}>
+      <iframe 
+        src={iframeUrl}
+        width="100%" 
+        height="100%" 
+        frameBorder="0"
+        style={{ border: "none", borderRadius: "8px", background: "#fff" }}
+        allow="camera; microphone"
+      ></iframe>
     </div>
   );
 }
