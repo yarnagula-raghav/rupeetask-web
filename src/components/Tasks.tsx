@@ -20,11 +20,11 @@ const triggerSuccess = async () => {
 };
 
 export default function Tasks() {
-  const [activeTab, setActiveTab] = useState<"ads" | "surveys" | "apps" | "monlix" | "theoremreach">("ads");
+  const [activeTab, setActiveTab] = useState<"ads" | "surveys" | "apps" | "monlix" | "theoremreach" | "adgem">("ads");
   const { dailyProgress } = useWallet();
   const clickCount = useRef(0);
 
-  const handleTabClick = (tab: "ads" | "surveys" | "apps" | "monlix" | "theoremreach") => {
+  const handleTabClick = (tab: "ads" | "surveys" | "apps" | "monlix" | "theoremreach" | "adgem") => {
     clickCount.current += 1;
     if (clickCount.current % 3 === 0) {
       window.open("https://www.effectivecpmnetwork.com/r2uywycqs?key=6c79331ac5e2c6595ba496c1fb5707a5", "_blank");
@@ -82,6 +82,13 @@ export default function Tasks() {
           >
             📊 TheoremReach
           </button>
+          <button
+            className={`tab-btn ${activeTab === "adgem" ? "active" : ""}`}
+            onClick={() => handleTabClick("adgem")}
+            style={{ flexShrink: 0, border: "1px solid #6366f1", color: "#6366f1" }}
+          >
+            💎 AdGem
+          </button>
         </div>
 
         {/* Tab Contents */}
@@ -92,6 +99,7 @@ export default function Tasks() {
 
         {activeTab === "monlix" && <MonlixTask />}
         {activeTab === "theoremreach" && <TheoremReachTask />}
+        {activeTab === "adgem" && <AdGemTask />}
       </div>
     </motion.section>
   );
@@ -341,6 +349,34 @@ function TheoremReachTask() {
         style={{ border: "none", borderRadius: "8px", background: "#fff" }}
         allow="camera; microphone"
       ></iframe>
+    </div>
+  );
+}
+
+// ================= 7. AdGem Task =================
+function AdGemTask() {
+  return (
+    <div className="tab-content active">
+      <div className="task-panel">
+        <div className="task-instructions-card">
+          <h3 style={{ fontWeight: 700, fontSize: "1.15rem", marginBottom: "12px", color: "#6366f1" }}>
+            💎 AdGem Offerwall
+          </h3>
+          <p style={{ fontSize: "0.88rem", color: "var(--color-text-secondary)", lineHeight: 1.5 }}>
+            Complete top mobile app installs, quick tasks, and high-paying surveys!
+          </p>
+        </div>
+
+        <div className="task-execute-box">
+          <button 
+            className="btn-primary"
+            style={{ background: "linear-gradient(90deg, #6366f1 0%, #4f46e5 100%)" }}
+            onClick={() => alert("AdGem is currently pending network approval. Once your account is fully approved, this button will go live automatically!")}
+          >
+            💎 Open AdGem (Pending Approval)
+          </button>
+        </div>
+      </div>
     </div>
   );
 }
