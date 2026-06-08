@@ -18,8 +18,6 @@ if (!admin.apps.length) {
   }
 }
 
-const db = admin.firestore();
-
 // Monlix Postback API
 // Typically expects: ?userId={userId}&rewardValue={rewardValue}&secretKey={secretKey}
 
@@ -41,6 +39,8 @@ export async function GET(request: Request) {
     if (isNaN(amount) || amount <= 0) {
       return NextResponse.json({ status: "error", message: "Invalid reward amount" }, { status: 400 });
     }
+
+    const db = admin.firestore();
 
     // 1. Fetch user from Firestore
     const userRef = db.collection("users").doc(userId);

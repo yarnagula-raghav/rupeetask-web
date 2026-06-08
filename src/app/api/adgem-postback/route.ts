@@ -19,8 +19,6 @@ if (!admin.apps.length) {
   }
 }
 
-const db = admin.firestore();
-
 export async function GET(request: Request) {
   try {
     const urlObj = new URL(request.url);
@@ -74,6 +72,8 @@ export async function GET(request: Request) {
       });
       return NextResponse.json({ success: false, error: "Unauthorized: Signature mismatch" }, { status: 401 });
     }
+
+    const db = admin.firestore();
 
     // 3. Database Transaction (Safe Wallet Update + De-duplication)
     const userRef = db.collection("users").doc(userId);

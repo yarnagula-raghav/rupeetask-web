@@ -18,8 +18,6 @@ if (!admin.apps.length) {
   }
 }
 
-const db = admin.firestore();
-
 // TimeWall Postback API
 // Typically expects: ?subId={user_id}&reward={amount}&signature={hash}
 
@@ -41,6 +39,8 @@ export async function GET(request: Request) {
     if (isNaN(amount) || amount <= 0) {
       return NextResponse.json({ status: "error", message: "Invalid reward amount" }, { status: 400 });
     }
+
+    const db = admin.firestore();
 
     // 1. Fetch user from Firestore
     const userRef = db.collection("users").doc(userId);

@@ -264,8 +264,15 @@ function SurveysTask() {
 
 // ================= 3. App Installs =================
 function AppInstallsTask() {
+  const { user } = useAuth();
+  
   const providers = [
-    { name: "OGAds Offerwall", color: "#ef4444", payout: "₹25-50 / install", status: "Pending API" },
+    { 
+      name: "OGAds Offerwall", 
+      color: "#ef4444", 
+      payout: "₹25-50 / install", 
+      status: process.env.NEXT_PUBLIC_OGADS_WALL_URL ? "Active" : "Pending API" 
+    },
     { name: "AdGate Media", color: "#3b82f6", payout: "₹20-40 / install", status: "Pending API" },
     { name: "Lootably", color: "#10b981", payout: "₹15-30 / install", status: "Pending API" },
     { name: "AdScend Media", color: "#f59e0b", payout: "₹10-25 / install", status: "Pending API" },
@@ -283,10 +290,23 @@ function AppInstallsTask() {
             </div>
             <button 
               className="btn-primary" 
-              style={{ background: "rgba(255,255,255,0.1)", color: "var(--color-text-secondary)" }}
-              onClick={() => alert(`${p.name} is awaiting API Approval!`)}
+              style={{ 
+                background: p.status === "Active" ? p.color : "rgba(255,255,255,0.1)", 
+                color: p.status === "Active" ? "white" : "var(--color-text-secondary)" 
+              }}
+              onClick={() => {
+                if (p.status === "Active" && user) {
+                  if (p.name === "OGAds Offerwall") {
+                    const baseUrl = process.env.NEXT_PUBLIC_OGADS_WALL_URL;
+                    const separator = baseUrl?.includes("?") ? "&" : "?";
+                    window.open(`${baseUrl}${separator}subid=${user.uid}`, '_blank');
+                  }
+                } else {
+                  alert(`${p.name} is awaiting API Approval!`);
+                }
+              }}
             >
-              Pending Approval
+              {p.status === "Active" ? "Open Wall" : "Pending Approval"}
             </button>
           </div>
         ))}
